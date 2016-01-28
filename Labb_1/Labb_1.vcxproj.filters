@@ -15,7 +15,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Labb1.c">
+    <ClCompile Include="Labb1_2.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Labb1_1.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Labb1_3.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Labb1_41.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

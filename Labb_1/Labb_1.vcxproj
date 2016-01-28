@@ -142,7 +142,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Labb1.c" />
+    <ClCompile Include="Labb1_1.c" />
+    <ClCompile Include="Labb1_2.c" />
+    <ClCompile Include="Labb1_3.c" />
+    <ClCompile Include="Labb1_41.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="test.bat" />
