@@ -1,0 +1,72 @@
+Fel 1)
+
+||=== Build: Debug in CBProjTitle_Lab1 (compiler: GNU GCC Compiler) ===|
+C:\Users\gfm10001\Dropbox\DVA117_V16_Programmering\Labbar\CodeBlocks\CBProjTitle_Lab1\main.c||In function 'main':|
+C:\Users\gfm10001\Dropbox\DVA117_V16_Programmering\Labbar\CodeBlocks\CBProjTitle_Lab1\main.c|5|error: 'b' undeclared (first use in this function)|
+C:\Users\gfm10001\Dropbox\DVA117_V16_Programmering\Labbar\CodeBlocks\CBProjTitle_Lab1\main.c|5|note: each undeclared identifier is reported only once for each function it appears in|
+C:\Users\gfm10001\Dropbox\DVA117_V16_Programmering\Labbar\CodeBlocks\CBProjTitle_Lab1\main.c|5|error: 'c' undeclared (first use in this function)|
+C:\Users\gfm10001\Dropbox\DVA117_V16_Programmering\Labbar\CodeBlocks\CBProjTitle_Lab1\main.c|5|warning: left-hand operand of comma expression has no effect [-Wunused-value]|
+||=== Build failed: 2 error(s), 1 warning(s) (0 minute(s), 0 second(s)) ===|
+
+
+Fel 2)
+||=== Build: Debug in CBProjTitle_Lab1 (compiler: GNU GCC Compiler) ===|
+C:\Users\gfm10001\Dropbox\DVA117_V16_Programmering\Labbar\CodeBlocks\CBProjTitle_Lab1\main.c||In function 'main':|
+C:\Users\gfm10001\Dropbox\DVA117_V16_Programmering\Labbar\CodeBlocks\CBProjTitle_Lab1\main.c|11|warning: implicit declaration of function 'prinf' [-Wimplicit-function-declaration]|
+obj\Debug\main.o||In function `main':|
+C:\Users\gfm10001\Dropbox\DVA117_V16_Programmering\Labbar\CodeBlocks\CBProjTitle_Lab1\main.c|11|undefined reference to `prinf'|
+||=== Build failed: 1 error(s), 1 warning(s) (0 minute(s), 0 second(s)) ===|
+
+
+Fel 3)
+||=== Build: Debug in CBProjTitle_Lab1 (compiler: GNU GCC Compiler) ===|
+C:\Users\gfm10001\Dropbox\DVA117_V16_Programmering\Labbar\CodeBlocks\CBProjTitle_Lab1\main.c||In function 'main':|
+C:\Users\gfm10001\Dropbox\DVA117_V16_Programmering\Labbar\CodeBlocks\CBProjTitle_Lab1\main.c|11|warning: missing terminating " character [enabled by default]|
+C:\Users\gfm10001\Dropbox\DVA117_V16_Programmering\Labbar\CodeBlocks\CBProjTitle_Lab1\main.c|11|error: missing terminating " character|
+C:\Users\gfm10001\Dropbox\DVA117_V16_Programmering\Labbar\CodeBlocks\CBProjTitle_Lab1\main.c|13|error: expected expression before 'return'|
+C:\Users\gfm10001\Dropbox\DVA117_V16_Programmering\Labbar\CodeBlocks\CBProjTitle_Lab1\main.c|14|error: expected ';' before '}' token|
+C:\Users\gfm10001\Dropbox\DVA117_V16_Programmering\Labbar\CodeBlocks\CBProjTitle_Lab1\main.c|5|warning: variable 'c' set but not used [-Wunused-but-set-variable]|
+C:\Users\gfm10001\Dropbox\DVA117_V16_Programmering\Labbar\CodeBlocks\CBProjTitle_Lab1\main.c|5|warning: variable 'b' set but not used [-Wunused-but-set-variable]|
+C:\Users\gfm10001\Dropbox\DVA117_V16_Programmering\Labbar\CodeBlocks\CBProjTitle_Lab1\main.c|5|warning: variable 'a' set but not used [-Wunused-but-set-variable]|
+C:\Users\gfm10001\Dropbox\DVA117_V16_Programmering\Labbar\CodeBlocks\CBProjTitle_Lab1\main.c|14|warning: control reaches end of non-void function [-Wreturn-type]|
+||=== Build failed: 3 error(s), 5 warning(s) (0 minute(s), 0 second(s)) ===|
+
+
+Fel 4) (vår variant)
+||=== Build: Debug in CBProjTitle_Lab1 (compiler: GNU GCC Compiler) ===|
+C:\Users\gfm10001\Dropbox\DVA117_V16_Programmering\Labbar\CodeBlocks\CBProjTitle_Lab1\main.c||In function 'main':|
+C:\Users\gfm10001\Dropbox\DVA117_V16_Programmering\Labbar\CodeBlocks\CBProjTitle_Lab1\main.c|5|error: expected identifier or '(' before ';' token|
+||=== Build failed: 1 error(s), 0 warning(s) (0 minute(s), 0 second(s)) ===|
+
+
+Fel 4) (riktiga)
+||=== Build: Debug in CBProjTitle_Lab1 (compiler: GNU GCC Compiler) ===|
+C:\Users\gfm10001\Dropbox\DVA117_V16_Programmering\Labbar\CodeBlocks\CBProjTitle_Lab1\main.c||In function 'main':|
+C:\Users\gfm10001\Dropbox\DVA117_V16_Programmering\Labbar\CodeBlocks\CBProjTitle_Lab1\main.c|11|warning: too many arguments for format [-Wformat-extra-args]|
+||=== Build finished: 0 error(s), 1 warning(s) (0 minute(s), 0 second(s)) ===|
+
+
+Fel 5)
+||=== Build: Debug in CBProjTitle_Lab1 (compiler: GNU GCC Compiler) ===|
+C:\Users\gfm10001\Dropbox\DVA117_V16_Programmering\Labbar\CodeBlocks\CBProjTitle_Lab1\main.c||In function 'main':|
+C:\Users\gfm10001\Dropbox\DVA117_V16_Programmering\Labbar\CodeBlocks\CBProjTitle_Lab1\main.c|13|error: expected ';' before 'return'|
+C:\Users\gfm10001\Dropbox\DVA117_V16_Programmering\Labbar\CodeBlocks\CBProjTitle_Lab1\main.c|14|warning: control reaches end of non-void function [-Wreturn-type]|
+||=== Build failed: 1 error(s), 1 warning(s) (0 minute(s), 0 second(s)) ===|
+
+
+Fel 6)
+||=== Build: Debug in CBProjTitle_Lab1 (compiler: GNU GCC Compiler) ===|
+C:\Users\gfm10001\Dropbox\DVA117_V16_Programmering\Labbar\CodeBlocks\CBProjTitle_Lab1\main.c||In function 'main':|
+C:\Users\gfm10001\Dropbox\DVA117_V16_Programmering\Labbar\CodeBlocks\CBProjTitle_Lab1\main.c|13|error: expected declaration or statement at end of input|
+||=== Build failed: 1 error(s), 0 warning(s) (0 minute(s), 0 second(s)) ===|
+
+
+Fel 7)
+||=== Build: Debug in CBProjTitle_Lab1 (compiler: GNU GCC Compiler) ===|
+C:\Users\gfm10001\Dropbox\DVA117_V16_Programmering\Labbar\CodeBlocks\CBProjTitle_Lab1\main.c||In function 'main':|
+C:\Users\gfm10001\Dropbox\DVA117_V16_Programmering\Labbar\CodeBlocks\CBProjTitle_Lab1\main.c|14|warning: control reaches end of non-void function [-Wreturn-type]|
+||=== Build finished: 0 error(s), 1 warning(s) (0 minute(s), 0 second(s)) ===|
+
+
+
+	
