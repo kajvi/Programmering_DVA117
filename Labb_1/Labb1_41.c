@@ -2,7 +2,7 @@
 // Daniel och Göran 20160128
 
 
-int main(void)
+int main141(void)
 {
     int code = -1;
     int error = 0;

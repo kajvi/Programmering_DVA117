@@ -6,7 +6,7 @@ int dummy(void)
 {
 }
 
-int main1(void)
+int main11(void)
 {
     int a, b, c; 
     a = 1;

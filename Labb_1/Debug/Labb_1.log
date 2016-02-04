@@ -1,2 +1,10 @@
-﻿  Labb1_41.c
+﻿  Labb2_3.c
+c:\users\daniel\onedrive\documents\github\programmering_dva117\labb_1\labb2_3.c(39): warning C4013: 'srand' undefined; assuming extern returning int
+c:\users\daniel\onedrive\documents\github\programmering_dva117\labb_1\labb2_3.c(39): warning C4013: 'time' undefined; assuming extern returning int
+c:\users\daniel\onedrive\documents\github\programmering_dva117\labb_1\labb2_3.c(40): warning C4013: 'rand' undefined; assuming extern returning int
+c:\users\daniel\onedrive\documents\github\programmering_dva117\labb_1\labb2_3.c(90): warning C4013: 'system' undefined; assuming extern returning int
+c:\users\daniel\onedrive\documents\github\programmering_dva117\labb_1\labb2_3.c(73): warning C4473: 'scanf_s' : not enough arguments passed for format string
+  c:\users\daniel\onedrive\documents\github\programmering_dva117\labb_1\labb2_3.c(73): note: placeholders and their parameters expect 2 variadic arguments, but 1 were provided
+  c:\users\daniel\onedrive\documents\github\programmering_dva117\labb_1\labb2_3.c(73): note: the missing variadic argument 2 is required by format string '%c'
+  c:\users\daniel\onedrive\documents\github\programmering_dva117\labb_1\labb2_3.c(73): note: this argument is used as a buffer size
   Labb_1.vcxproj -> C:\Users\Daniel\OneDrive\Documents\GitHub\Programmering_DVA117\Labb_1\Debug\Labb_1.exe

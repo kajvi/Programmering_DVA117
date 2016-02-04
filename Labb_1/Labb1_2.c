@@ -2,7 +2,7 @@
 // Daniel och Göran 20160128
 
 
-int main2(void)
+int main12(void)
 {
     int a = 0;
     int b = 0;

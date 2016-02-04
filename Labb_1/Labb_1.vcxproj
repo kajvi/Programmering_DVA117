@@ -146,6 +146,9 @@
     <ClCompile Include="Labb1_2.c" />
     <ClCompile Include="Labb1_3.c" />
     <ClCompile Include="Labb1_41.c" />
+    <ClCompile Include="Labb2_1.c" />
+    <ClCompile Include="Labb2_2.c" />
+    <ClCompile Include="Labb2_3.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="test.bat" />

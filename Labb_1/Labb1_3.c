@@ -2,7 +2,7 @@
 // Daniel och Göran 20160128
 
 
-int main3(void)
+int main13(void)
 {
     int angle = 0;
     int error = 0;
