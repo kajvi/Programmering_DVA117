@@ -28,7 +28,7 @@ int comparer(int i_answer, int i_guess)
 
 // ---------------------------------------------------------------------------- 
 
-int main(void)
+int main23(void)
 {
     int guess, answer = 0;
     char repeatChar = '\0';
@@ -49,8 +49,8 @@ int main(void)
             // Result returneras från comparer() och kan vara -1 = lågt, 0 = rätt, 1 = högt.
             int result = 2;
 
-            printf_s("Guess: ");
-            scanf_s("%d", &guess);
+            printf_s("Guess: %d ", scanf_s("%d", &guess));
+            //scanf_s("%d", &guess);
 
             result = comparer(answer, guess);
             tryCount = tryCount + 1;
