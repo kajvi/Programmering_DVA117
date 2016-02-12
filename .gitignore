@@ -5,9 +5,13 @@
 *.dll
 *.exe
 *.o
+*.obj
 *.so
 *.manifest
 *.pdb
+*.idb
+*.enc
+*.ilk
 *.cache
 *.cachefile
 
