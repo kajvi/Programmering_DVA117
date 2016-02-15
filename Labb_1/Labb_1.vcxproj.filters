@@ -45,6 +45,9 @@
     <ClCompile Include="Labb3_3.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Labb4_1.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="test.bat">
