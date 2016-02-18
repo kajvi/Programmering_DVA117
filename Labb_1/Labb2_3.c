@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 // Daniel och Göran 20160204
 
 // ---------------------------------------------------------------------------- 
@@ -81,7 +82,7 @@ int main23(void)
             // Löser problemet med oönskade \n genom att läsa tills de är slut. 
             do
             {
-                scanf_s("%c", &repeatChar);
+                scanf_s("%c", &repeatChar, 1);
                 //printf_s("\n%d\n", repeatChar);
             } while (repeatChar == 10);
 

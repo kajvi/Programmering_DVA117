@@ -114,7 +114,7 @@ static void flushRestOfLine(void)
 
 
 
-int main33(void)
+void main33(void)
 {
     char sentenceChArr[C_SENTENCE_COUNT];
     char repeatChar;
@@ -177,5 +177,4 @@ int main33(void)
 
 
     printf_s("Thank you for using PalindromTester!\n\n");
-    return 0;
 }

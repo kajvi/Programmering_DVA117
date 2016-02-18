@@ -2,10 +2,10 @@
 // Daniel och Göran 20160204
 
 
-int main21(void)
+void main21(void)
 {
     int inputNumber, min, max, sum, count = 0; 
-    char repeatChar = '/0';
+    char repeatChar = '\0';
 
     printf_s("Welcome to the Sequence calculator MaxMinSumMean! \n ");
 
@@ -73,7 +73,7 @@ int main21(void)
             printf_s("Would you like to enter a new sequence? (y/n): ");
             do
             {
-                scanf_s("%c", &repeatChar);
+                scanf_s("%c", &repeatChar, 1);
                 //printf_s("\n%d\n", repeatChar);
             } while (repeatChar == 10);
             
@@ -95,5 +95,5 @@ int main21(void)
     } while (repeatChar == 'y');
 
     printf_s("Thank you for using MaxMinSumMean!\n\n ");
-    system("pause");
+    //system("pause");
 }
