@@ -25,7 +25,6 @@ static void flushRestOfLine(void)
         scanf_s("%c", &ch, 1);
         //printf_s("\n%d\n", ch);
     } while (ch != C_RADSLUT);
-
 }// flushRestOfLine
 
 
@@ -111,34 +110,46 @@ void printFirstWord(char ir_chArr[])
     int wordEndIndex = -2; // Början på ordet ligger efter slutet på ordet om inget ord hittats för att hjälpa utskriften nedan
     int index = 0;
 
-    // Hitta början på första ordet
-    do
+    if (NULL != ir_chArr)
     {
-        if (1 == isAlphabet(ir_chArr[index]))
+        // Hitta början på första ordet
+        while (ir_chArr[index] != '\0')
         {
-            wordStartIndex = index;
-            break;
+            if (1 == isAlphabet(ir_chArr[index]))
+            {
+                wordStartIndex = index; // Vi har hittat första bokstaven. Spara adressen.
+                break;
+            }
+            index++;
         }
-        index++;
-    } while (ir_chArr[index] != '\0');
 
-    // Hitta Slutet på första ordet
-    do
-    {
-        if (1 == isAlphabet(ir_chArr[index]) && wordStartIndex != -1)
+        // Om vi hittat starten på ett ord - hitta slutet
+        if (wordStartIndex != -1)
         {
-            wordEndIndex = index;
-        }
-        else
-        {
-            break;
-        }
-        index++;
-    } while (ir_chArr[index] != '\0');
+            do
+            {
+                if (1 == isAlphabet(ir_chArr[index]))
+                {
+                    wordEndIndex = index;
+                }
+                else
+                {
+                    break;
+                }
 
-    for (int i = wordStartIndex; i <= wordEndIndex; i++)
+                index++;
+            } while (ir_chArr[index] != '\0');
+
+            // Skriv ut ordet
+            for (int i = wordStartIndex; i <= wordEndIndex; i++)
+            {
+                printf_s("%c", ir_chArr[i]);
+            }
+        }
+    }
+    if (-1 == wordStartIndex)
     {
-        printf_s("%c", ir_chArr[i]);
+        printf_s("There is no word at the requested index.");
     }
     
 } // printFirstWord
@@ -146,22 +157,32 @@ void printFirstWord(char ir_chArr[])
 
 char* getWord(char ir_charArr[], int i_wordIndex)
 {
+    // Returnerar pekare till det ord som ligger på wordIndex.
+    // Om wordIndex är större än tillgängligt antal ord returneras pekare till '\0'
+
     int index = 0;
     int count = 0;
-    char *wordPtr;
+    char *wordPtr = NULL;
     int insideWord = 0;
+    
     do 
     {
         if (1 == isAlphabet(ir_charArr[index]))
         {
-            if (0 != insideWord)
+            if (0 == insideWord)
             {
                 // Nytt ord Börjar
-                adress = &ir_charArr[index];
+                if (count == i_wordIndex)
+                {
+                    wordPtr = &ir_charArr[index];
+                    break; // Vi har satt pekarens värde: bryt
+                }
+                insideWord = 1;
             }
             else
             {
                 // Vi är i ett ord
+                insideWord = 1;
             }
         }
         else
@@ -170,15 +191,16 @@ char* getWord(char ir_charArr[], int i_wordIndex)
             {
                 // Ordet Slutar
                 count++;
+                insideWord = 0;
             }
             else
             {
                 // Vi är mellan ord
-
+                insideWord = 0;
             }
         }
         index++;
-    } while (count != i_wordIndex);
+    } while (ir_charArr[index] != '\0');
 
     return wordPtr;
 } // getWord
@@ -189,6 +211,11 @@ void main(void)
     char chArr[C_SIZE_OF_TARGET_ARR];
     int wordIndex = -1;
     char *chArrPtr;
+    char* temp;
+
+    //temp = getWord("Hej på dej", 1);
+    //temp = getWord("en sträng", 0);
+    //temp = getWord("ett ord", 2);
 
     printf_s("Welcome Word Finder!\n");
     do
@@ -196,22 +223,30 @@ void main(void)
 
         printf_s("\nPlease enter a sentence: ");
 
-
         scanLine(chArr, C_SIZE_OF_TARGET_ARR);
         printf_s("chArr = \"%s\"\n", chArr);
         // printf_s("\nThe first word is: \n");
         // printFirstWord(chArr);
         // printf_s("\n");
 
-        printf_s("Which word index do you want to print?");
+        printf_s("Which word index do you want to print? ");
         scanf_s("%d", &wordIndex);
         flushRestOfLine();
 
         chArrPtr = getWord(chArr, wordIndex);
-        printf_s("The word at index %d is: \"", wordIndex);
+        if (NULL != chArrPtr)
+        {
+            printf_s("The word at index %d is: \"", wordIndex);
+            printFirstWord(chArrPtr);
+            printf_s("\"\n");
+        }
+        else
+        {
+            printFirstWord(chArrPtr);
+            printf_s("\n");
+        }
         
-        printFirstWord(chArrPtr);
-        printf_s("\"\n");
+
 
     } while (1 == yesNoRepeater("Would you like to run the Word Finder again?"));
 }

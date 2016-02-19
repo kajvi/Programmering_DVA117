@@ -1,5 +1,6 @@
 #include <stdio.h>
-#include <math.h>
+#include <stdlib.h>
+#include <time.h>
 // Daniel och Göran 20160204
 
 // ---------------------------------------------------------------------------- 
@@ -41,7 +42,7 @@ int main23(void)
         int tryCount = 0;
 
         // Slumpar ett tal
-        srand(time(0));
+        srand((unsigned int)time(0));
         answer = rand() % 100 + 1;
 
         printf_s("You may now guess a number [1, 100] : \n");
@@ -99,7 +100,7 @@ int main23(void)
 
     printf_s("\nThank you for playing the \"Guess a Number\" Game!\n\n");
 
-    system("pause");
+    //system("pause");
     return 0;
 } // main
 
