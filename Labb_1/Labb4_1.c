@@ -1,6 +1,7 @@
-// Daniel Stenekap och Göran Forström
-
 #include <stdio.h>
+
+// 2016-02-18 Daniel Stenekap och Göran Forström
+
 
 #define C_SIZE_OF_PRIME_SIEVE 1001
 #define C_SIZE_OF_TARGET_ARR 100
@@ -8,9 +9,11 @@
 
 void flushRestOfLine(void);
 
+// ============================================================================
+
 static int yesNoRepeater(char ir_prompt[])
 {
-    // Return 1 = yes , 0 = no
+   // Print prompt, wait for "y" or "n" to be entered and return 1 = yes , 0 = no
 
     char repeatChar;
     do
@@ -38,6 +41,7 @@ static int yesNoRepeater(char ir_prompt[])
     } while (1 == 1);
 } // yesNoRepeater
 
+// ============================================================================
 
 static void flushRestOfLine(void)
 {
@@ -52,6 +56,7 @@ static void flushRestOfLine(void)
 
 }// flushRestOfLine
 
+// ============================================================================
 
 void primeSieve(int ir_primeSieveArr[], int i_maxSieveSize)
 {
@@ -81,6 +86,8 @@ void primeSieve(int ir_primeSieveArr[], int i_maxSieveSize)
     ir_primeSieveArr[0] = -1;
     ir_primeSieveArr[1] = -1;
 } // primeSieve
+
+// ============================================================================
 
 int keepPrimes(int ir_primeSieveArr[], int i_maxSieveSize, unsigned long long  ir_targetArr[], int i_targetSize)
 {
@@ -125,7 +132,9 @@ int keepPrimes(int ir_primeSieveArr[], int i_maxSieveSize, unsigned long long  i
     } while (targetIndex < i_targetSize);
 
     return count;
-}
+} // keepPrimes
+
+// ============================================================================
 
 void main42(void)
 {
@@ -133,12 +142,13 @@ void main42(void)
     unsigned long long targetArr[C_SIZE_OF_TARGET_ARR];
     int targetCount;
     int numberOfPrimes;
+
     //unsigned long long test;
     //printf_s("%d %d\n", sizeof(targetCount), sizeof(test));
 
     printf_s("Welcome to PrimeChecker!\n\n");
 
-    //Skapar primtalssållet
+    // Skapar primtalssållet
     primeSieve(primeSieveArr, C_SIZE_OF_PRIME_SIEVE);
     do
     {
@@ -193,7 +203,6 @@ void main42(void)
     } while (1 == yesNoRepeater("Would you like to run the Primechecker again?"));
 
 
+    printf_s("\nThank you for using PrimeChecker!\n\n");
 
-    printf_s("Thank you for using PrimeChecker!\n\n");
-
-}
+} // main

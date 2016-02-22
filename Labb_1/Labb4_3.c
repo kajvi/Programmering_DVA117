@@ -1,8 +1,8 @@
 #include <stdio.h>
 
+// 2016-02-18 Daniel Stenekap och Göran Forström
+
 #define C_SIZE_OF_TARGET_ARR 100
-
-
 
 // Hämtat från windows 10 dosfönster (svenskt språk).
 #define C_DOS_AA -113
@@ -14,6 +14,7 @@
 
 #define C_RADSLUT 10
 
+// ============================================================================
 
 static void flushRestOfLine(void)
 {
@@ -27,6 +28,7 @@ static void flushRestOfLine(void)
     } while (ch != C_RADSLUT);
 }// flushRestOfLine
 
+// ============================================================================
 
 void scanLine(char ro_chArr[], int i_maxSize)
 {
@@ -58,9 +60,11 @@ void scanLine(char ro_chArr[], int i_maxSize)
     } 
 } // scanLine
 
+// ============================================================================
+
 static int yesNoRepeater(char ir_prompt[])
 {
-    // Return 1 = yes , 0 = no
+    // Print prompt, wait for "y" or "n" to be entered and return 1 = yes , 0 = no
 
     char repeatChar;
     do
@@ -88,6 +92,7 @@ static int yesNoRepeater(char ir_prompt[])
     } while (1 == 1);
 } // yesNoRepeater
 
+// ============================================================================
 
 int isAlphabet(char i_ch)
 {
@@ -103,6 +108,8 @@ int isAlphabet(char i_ch)
     }
     return resInt;
 } // isAlphabet
+
+// ============================================================================
 
 void printFirstWord(char ir_chArr[])
 {
@@ -154,6 +161,7 @@ void printFirstWord(char ir_chArr[])
     
 } // printFirstWord
 
+// ============================================================================
 
 char* getWord(char ir_charArr[], int i_wordIndex)
 {
@@ -205,6 +213,7 @@ char* getWord(char ir_charArr[], int i_wordIndex)
     return wordPtr;
 } // getWord
 
+// ============================================================================
 
 void main(void)
 {
@@ -213,11 +222,13 @@ void main(void)
     char *chArrPtr;
     char* temp;
 
-    //temp = getWord("Hej på dej", 1);
-    //temp = getWord("en sträng", 0);
-    //temp = getWord("ett ord", 2);
+    // Testdata fdom labb-assignment:
+    // temp = getWord("Hej på dej", 1);
+    // temp = getWord("en sträng", 0);
+    // temp = getWord("ett ord", 2);
 
     printf_s("Welcome Word Finder!\n");
+
     do
     {
 
@@ -247,6 +258,11 @@ void main(void)
         }
         
 
-
     } while (1 == yesNoRepeater("Would you like to run the Word Finder again?"));
-}
+
+    printf_s("\nThank you for using Word Finder\n\n");
+
+} // main
+
+// ============================================================================
+

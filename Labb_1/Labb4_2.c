@@ -1,8 +1,11 @@
-// Daniel Stenekap och Göran Forström
-
 #include <stdio.h>
 
+// 2016-02-18 Daniel Stenekap och Göran Forström
+
+
 #define C_SIZE_OF_TARGET_ARR 100
+
+// ============================================================================
 
 static void flushRestOfLine(void)
 {
@@ -17,9 +20,11 @@ static void flushRestOfLine(void)
 
 }// flushRestOfLine
 
+// ============================================================================
+
 static int yesNoRepeater(char ir_prompt[])
 {
-    // Return 1 = yes , 0 = no
+   // Print prompt, wait for "y" or "n" to be entered and return 1 = yes , 0 = no
 
     char repeatChar;
     do
@@ -46,6 +51,8 @@ static int yesNoRepeater(char ir_prompt[])
         }
     } while (1 == 1);
 } // yesNoRepeater
+
+// ============================================================================
 
 void freqAnalyser(int ior_targetArr[], int i_count, int *ro_value, int *ro_frequency)
 {
@@ -88,6 +95,7 @@ void freqAnalyser(int ior_targetArr[], int i_count, int *ro_value, int *ro_frequ
     }
 } // freqAnalyser
 
+// ============================================================================
 
 void main4_2(void)
 {
@@ -98,6 +106,7 @@ void main4_2(void)
     int frequency;
 
     printf_s("Welcome to Frequency Analyser!\n");
+
     do
     {
 
@@ -105,12 +114,13 @@ void main4_2(void)
         endFlag = 0;
 
         printf_s("\nPlease enter integers between [0:1000]. You may enter upp to 100 integers.\n");
-        printf_s("To finnish inputting integers enter a negative value.\n");
+        printf_s("To finish inputting integers enter a negative value.\n");
 
         // Läser in tal
         do
         {
             int temp;
+
             printf_s("Enter a number: ");
             scanf_s("%d", &temp);
             flushRestOfLine();
@@ -124,7 +134,6 @@ void main4_2(void)
             {
                 endFlag = 1;
             }
-
 
         } while (0 == endFlag);
 
@@ -140,4 +149,10 @@ void main4_2(void)
         
 
     } while (1 == yesNoRepeater("Would you like to run the Frequency Analyser again?"));
-}
+
+    printf_s("\nThank you for using Frequency Analyser\n\n");
+
+} // main
+
+// ============================================================================
+
