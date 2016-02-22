@@ -11,10 +11,11 @@
 void fillArray(int i_count, int or_numArray[])
 {
     int num;
+	int i; // Adapted for VS2010
 
     // Slumpar ett tal
     srand((unsigned int)time(0));
-    for (int i = 0; i < i_count; i++)
+    for (i = 0; i < i_count; i++)
     {
         num = rand() % 10 + 1;
         or_numArray[i] = num;
@@ -44,8 +45,9 @@ void flushRestOfLine(void)
 int searchArray(int i_count, int ir_numArray[], int i_target)
 {
     int targetCount = 0;
+	int i; // Adapted for VS2010
 
-    for (int i = 0; i < i_count; i++)
+    for (i = 0; i < i_count; i++)
     {
         if (ir_numArray[i] == i_target)
         {
@@ -64,6 +66,7 @@ int main31(void)
     int target = -1;
     char repeatChar;
     int targetCount = -1;
+	int i; // Adapted for VS2010
 
     printf_s("Welcome to the Number Finder!\n\n");
     do
@@ -72,7 +75,7 @@ int main31(void)
         fillArray(C_ARRAY_COUNT, numArray);
 
         // Skriver ut arrayen.
-        for (int i = 0; i < C_ARRAY_COUNT; i++)
+        for (i = 0; i < C_ARRAY_COUNT; i++)
         {
             printf_s("Number: %d\n", numArray[i]);
         }

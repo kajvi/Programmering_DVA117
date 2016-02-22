@@ -62,20 +62,23 @@ void primeSieve(int ir_primeSieveArr[], int i_maxSieveSize)
 {
     // Skapar ett primtalssåll (Eratosthenes algorithm) med primtal upp till C_SIZE_OF_PRIME_SIEVE
 
+	int index; // Adapted for VS2010
+
     // indexerar arrayen till C_SIZE_OF_PRIME_SIEVE
-    for (int index = 0; index < i_maxSieveSize; index++)
+    for (index = 0; index < i_maxSieveSize; index++)
     {
         ir_primeSieveArr[index] = index;
     }
 
     // Sätter alla icke primtal till -1 enligt Eratosthenes algorithm
-    for (int index = 2; index < i_maxSieveSize; index++)
+    for (index = 2; index < i_maxSieveSize; index++)
     {
         int currPrime = ir_primeSieveArr[index];
 
         if (currPrime != -1)
         {
-            for (int index2 = currPrime * 2; index2 < i_maxSieveSize; index2 = index2 + currPrime)
+			int index2; // Adapted for VS2010
+            for (index2 = currPrime * 2; index2 < i_maxSieveSize; index2 = index2 + currPrime)
             {
                 ir_primeSieveArr[index2] = -1;
             }
@@ -101,7 +104,8 @@ int keepPrimes(int ir_primeSieveArr[], int i_maxSieveSize, unsigned long long  i
         if (ir_targetArr[targetIndex] > i_maxSieveSize)
         {
             // Brute Force metod Dividerar med alla tal upp till target (vi kunde ha tagit roten ur först)
-            for (unsigned long long testInt = 2; testInt < ir_targetArr[targetIndex]; testInt++)
+			unsigned long long testInt; // Adapted for VS2010
+            for (testInt = 2; testInt < ir_targetArr[targetIndex]; testInt++)
             {
                 if ((ir_targetArr[targetIndex] % testInt) == 0)
                 {
@@ -142,6 +146,7 @@ void main42(void)
     unsigned long long targetArr[C_SIZE_OF_TARGET_ARR];
     int targetCount;
     int numberOfPrimes;
+	int i; // Adapied for VS2010
 
     //unsigned long long test;
     //printf_s("%d %d\n", sizeof(targetCount), sizeof(test));
@@ -171,7 +176,7 @@ void main42(void)
 
         // Läser in tal
         printf_s("Enter %d Integers: \n", targetCount);
-        for (int i = 0; i < targetCount; i++)
+        for (i = 0; i < targetCount; i++)
         {
             printf_s("Enter a number: ");
             scanf_s("%llu", &targetArr[i]);
@@ -180,7 +185,7 @@ void main42(void)
 
         // Skriver ut talen
         printf_s("You entered the following: [ ");
-        for (int i = 0; i < targetCount; i++)
+        for (i = 0; i < targetCount; i++)
         {
             printf_s("%llu ", targetArr[i]);
         }
@@ -191,7 +196,7 @@ void main42(void)
 
         // Skriver ut antalet primtal och vilka av talen som är primtal
         printf_s("You entered %d Prime(s) as follows: [ ", numberOfPrimes);
-        for (int i = 0; i < targetCount; i++)
+        for (i = 0; i < targetCount; i++)
         {
             if (-1 != targetArr[i])
             {

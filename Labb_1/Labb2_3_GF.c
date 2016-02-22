@@ -9,7 +9,7 @@
 
 // ============================================================================
 
-int comparer(int i_answer, int i_guess)
+static int comparer(int i_answer, int i_guess)
 {
     int directionOfGuess = 2;
 
@@ -34,7 +34,7 @@ int comparer(int i_answer, int i_guess)
 
 // ============================================================================
 
-int main(void)
+int main23_GF(void)
 {
     int guess, answer = 0;
     char repeatChar = '\0';
@@ -99,10 +99,10 @@ int main(void)
             {
 				repeatChar = getchar();
 				
+			 // exp.
 			 // repeatChar = _getch();
-
-             //   scanf_s("%c", &repeatChar);
-             //   printf_s("\n%d\n", repeatChar);
+             // scanf_s("%c", &repeatChar);
+             // printf_s("\n%d\n", repeatChar);
 
 				if (repeatChar == 'y' || repeatChar == 'n')
 				{

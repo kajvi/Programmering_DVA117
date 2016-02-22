@@ -62,11 +62,12 @@ void freqAnalyser(int ior_targetArr[], int i_count, int *ro_value, int *ro_frequ
     int currCount = 0;
     int currValue = 0;
     int tempIndex = 0;
+	int index; // Adapted for VS2010
 
     *ro_value = -1;
     *ro_frequency = 0;
 
-    for (int index = 0; index < i_count; index++)
+    for (index = 0; index < i_count; index++)
     {
         if (-1 != ior_targetArr[index])
         {

@@ -6,7 +6,7 @@
 
 // ============================================================================
 
-int comparer(int i_answer, int i_guess)
+static int comparer(int i_answer, int i_guess)
 {
     int directionOfGuess = 2;
 

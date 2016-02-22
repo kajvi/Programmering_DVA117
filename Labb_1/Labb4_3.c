@@ -148,10 +148,13 @@ void printFirstWord(char ir_chArr[])
             } while (ir_chArr[index] != '\0');
 
             // Skriv ut ordet
-            for (int i = wordStartIndex; i <= wordEndIndex; i++)
-            {
-                printf_s("%c", ir_chArr[i]);
-            }
+			{
+				int i;	// Adapted for VS2010
+				for (i = wordStartIndex; i <= wordEndIndex; i++)
+				{
+					printf_s("%c", ir_chArr[i]);
+				}
+			}
         }
     }
     if (-1 == wordStartIndex)
@@ -220,7 +223,7 @@ void main(void)
     char chArr[C_SIZE_OF_TARGET_ARR];
     int wordIndex = -1;
     char *chArrPtr;
-    char* temp;
+//    char* temp;
 
     // Testdata fdom labb-assignment:
     // temp = getWord("Hej på dej", 1);
