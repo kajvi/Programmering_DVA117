@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <Windows.h>
+
 // Daniel och Göran 20160211
 
 #define C_SENTENCE_COUNT 100
@@ -30,6 +31,8 @@ int isLetter(char i_ch)
     return resInt;
 } // isLetter
 
+// ============================================================================
+
 char makeUppercase(char i_ch)
 {
     char resChar = '?';
@@ -56,6 +59,8 @@ char makeUppercase(char i_ch)
     return resChar;
 } // makeUppercase
 
+// ============================================================================
+
 int isPalindrome(char* ir_SentenceChArr)
 {
     char workSentenceChArr[C_SENTENCE_COUNT];
@@ -64,7 +69,7 @@ int isPalindrome(char* ir_SentenceChArr)
     int forwardIndex = 0;
     int backwardIndex = -1;
 
-    // Steg ett: filtrera till bara bokstäver
+    // Steg 1: filtrera till bara bokstäver
     index = 0;
     while (ir_SentenceChArr[index] != '\0')
     {
@@ -99,6 +104,8 @@ int isPalindrome(char* ir_SentenceChArr)
     return resInt;
 } // isPalindrome
 
+// ============================================================================
+
 static void flushRestOfLine(void)
 {
     // Call ONLY when EOL expected from the keyboardstream.
@@ -112,7 +119,7 @@ static void flushRestOfLine(void)
 
 }// flushRestOfLine
 
-
+// ============================================================================
 
 void main33(void)
 {
@@ -123,6 +130,7 @@ void main33(void)
     int result = -1;
     
     printf_s("Welcome to the Palindrome Checker!\n\n");
+
     do
     {
      
@@ -157,7 +165,7 @@ void main33(void)
         {
             // Loopar tills man väljer att avsluta eller börja om.
 
-            printf_s("Would you like to test and other sentence? (y/n): ");
+            printf_s("Would you like to test another sentence? (y/n): ");
             scanf_s("%c", &repeatChar, 1);
 
             // Tömmer resten av In-strömmen från tangentbordet fram till radslut.
@@ -175,6 +183,9 @@ void main33(void)
     } while (repeatChar == 'y');
 
 
+    printf_s("\nThank you for using Palindrom Tester!\n\n");
 
-    printf_s("Thank you for using PalindromTester!\n\n");
-}
+} // main
+
+// ============================================================================
+

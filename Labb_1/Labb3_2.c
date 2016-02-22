@@ -2,12 +2,13 @@
 #include <stdlib.h>
 #include <time.h>
 #include <Windows.h>
+
 // Daniel och Göran 20160211
 
 #define C_DICE_COUNT 5
 #define C_DICE_FACE_COUNT 6
 
-// ---------------------------------------------------------------------------- 
+// ============================================================================
 
 void rollDice(int i_count, int or_diceArray[])
 {
@@ -25,6 +26,7 @@ void rollDice(int i_count, int or_diceArray[])
 
 } // rollDice
 
+// ============================================================================
 
 static void flushRestOfLine(void)
 {
@@ -39,7 +41,7 @@ static void flushRestOfLine(void)
 
 }// flushRestOfLine
 
-
+// ============================================================================
 
 int sumDice(int i_count, int ir_diceArray[])
 {
@@ -53,6 +55,7 @@ int sumDice(int i_count, int ir_diceArray[])
     return sum;
 } // sumDice
 
+// ============================================================================
 
 int countDice(int i_count, int ir_diceArray[], int i_target)
 {
@@ -69,6 +72,8 @@ int countDice(int i_count, int ir_diceArray[], int i_target)
     return targetCount;
 } // countDice
 
+// ============================================================================
+
 void printNumAsText(int i_num)
 {
     if (i_num == 1)
@@ -81,11 +86,13 @@ void printNumAsText(int i_num)
     }
 } // printNumAsText
 
+// ============================================================================
+
 void printDices(int i_count, int ir_diceArray[])
 {
    char diceFace[6][3][3] = {        { {' ', ' ', ' '}, {' ', '*', ' '}, {' ', ' ', ' '} }, /* Ett */               { {'*', ' ', ' '}, {' ', ' ', ' '}, {' ', ' ', '*'} }, /* Två */        { {'*', ' ', ' '}, {' ', '*', ' '}, {' ', ' ', '*'} }, /* Tre */        { {'*', ' ', '*'}, {' ', ' ', ' '}, {'*', ' ', '*'} }, /* Fyra */        { {'*', ' ', '*'}, {' ', '*', ' '}, {'*', ' ', '*'} }, /* Fem */        { {'*', ' ', '*'}, {'*', ' ', '*'}, {'*', ' ', '*'} } /* Sex */                            };
- for (int i = 0; i < i_count; i++)
-    {
+   for (int i = 0; i < i_count; i++)
+   {
         int face = ir_diceArray[i] - 1;
         for (int row = 0; row < 3; row++)
         {
@@ -103,6 +110,7 @@ void printDices(int i_count, int ir_diceArray[])
 
 } // printDices
 
+// ============================================================================
 
 int main32(void)
 {
@@ -196,6 +204,10 @@ int main32(void)
 
 
 
-    printf_s("Thank you for playing the Yatzy Game!\n\n");
+    printf_s("\nThank you for playing the Yatzy Game!\n\n");
     return 0;
-}
+
+} // main
+
+// ============================================================================
+

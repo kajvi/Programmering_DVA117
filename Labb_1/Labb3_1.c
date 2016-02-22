@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+
 // Daniel och Göran 20160211
 
 #define C_ARRAY_COUNT 10
 
-// ---------------------------------------------------------------------------- 
+// ============================================================================
 
 void fillArray(int i_count, int or_numArray[])
 {
@@ -23,6 +24,7 @@ void fillArray(int i_count, int or_numArray[])
 
 } // fillArray
 
+// ============================================================================
 
 void flushRestOfLine(void)
 {
@@ -37,7 +39,7 @@ void flushRestOfLine(void)
 
 }// flushRestOfLine
 
-
+// ============================================================================
 
 int searchArray(int i_count, int ir_numArray[], int i_target)
 {
@@ -54,6 +56,7 @@ int searchArray(int i_count, int ir_numArray[], int i_target)
     return targetCount;
 } // searchArray
 
+// ============================================================================
 
 int main31(void)
 {
@@ -106,7 +109,10 @@ int main31(void)
     } while (repeatChar == 'y');
 
 
-
-    printf_s("Thank you for using the Number Finder!\n\n");
+    printf_s("\nThank you for using the Number Finder!\n\n");
     return 0;
-}
+
+} // main
+
+// ============================================================================
+
