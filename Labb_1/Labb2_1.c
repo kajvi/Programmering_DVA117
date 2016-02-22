@@ -1,6 +1,9 @@
 #include <stdio.h>
+
 // Daniel och Göran 20160204
 
+
+// ============================================================================
 
 void main21(void)
 {
@@ -94,6 +97,12 @@ void main21(void)
 
     } while (repeatChar == 'y');
 
-    printf_s("Thank you for using MaxMinSumMean!\n\n ");
+
+    printf_s("\nThank you for using MaxMinSumMean!\n\n ");
     //system("pause");
-}
+
+} // main
+
+// ============================================================================
+
+

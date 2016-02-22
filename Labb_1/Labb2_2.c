@@ -1,5 +1,9 @@
 #include <stdio.h>
+
 // Daniel och Göran 20160204
+
+
+// ============================================================================
 
 float getKr(void)
 {
@@ -7,7 +11,9 @@ float getKr(void)
     printf_s("Enter the amount in Sek that you wish to convert: ");
     scanf_s("%f", &kr);
     return kr;
-}
+} // getKr
+
+// ============================================================================
 
 float krToEuro(float i_kr)
 {
@@ -16,13 +22,17 @@ float krToEuro(float i_kr)
     euro = i_kr * kurs;
 
     return euro;
-}
+} // krToEuro
+
+// ============================================================================
 
 void printer(float i_euro)
 {
     printf_s("This equals %.2f Euro\n", i_euro);
     return;
-}
+} // printer
+
+// ============================================================================
 
 int main22(void)
 {
@@ -34,4 +44,7 @@ int main22(void)
     printer(euro);
 
     return 0;
-}
+} // main
+
+// ============================================================================
+
