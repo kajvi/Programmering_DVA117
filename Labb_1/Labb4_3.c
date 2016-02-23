@@ -218,14 +218,15 @@ char* getWord(char ir_charArr[], int i_wordIndex)
 
 // ============================================================================
 
-void main(void)
+void main43(void)
 {
     char chArr[C_SIZE_OF_TARGET_ARR];
     int wordIndex = -1;
     char *chArrPtr;
-//    char* temp;
-
+    
     // Testdata fdom labb-assignment:
+    // char* temp;
+
     // temp = getWord("Hej på dej", 1);
     // temp = getWord("en sträng", 0);
     // temp = getWord("ett ord", 2);

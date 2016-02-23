@@ -98,7 +98,7 @@ void freqAnalyser(int ior_targetArr[], int i_count, int *ro_value, int *ro_frequ
 
 // ============================================================================
 
-void main4_2(void)
+void main42(void)
 {
     int targetArr[C_SIZE_OF_TARGET_ARR];
     int nextFreeTargetArrIndex = 0;

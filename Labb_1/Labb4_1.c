@@ -140,7 +140,7 @@ int keepPrimes(int ir_primeSieveArr[], int i_maxSieveSize, unsigned long long  i
 
 // ============================================================================
 
-void main42(void)
+void main41(void)
 {
     int primeSieveArr[C_SIZE_OF_PRIME_SIEVE];
     unsigned long long targetArr[C_SIZE_OF_TARGET_ARR];
