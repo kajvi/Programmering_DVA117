@@ -1,12 +1,18 @@
 ﻿#include <stdio.h>
-// Daniel och Göran 20160128
 
-/*program som skriver ut heltal*/
-int dummy(void)
+// Daniel och Göran 2016-01-28
+
+/* Program som skriver ut heltal. */
+
+// ============================================================================
+
+void dummy(void)
 {
-}
+} // dummy
 
-int main11(void)
+// ============================================================================
+
+void main11(void)
 {
     int a, b, c; 
     a = 1;
@@ -15,4 +21,7 @@ int main11(void)
     printf("variabel a : %d, b : %d, c : %d \n", a, b, c);
 
  //   return 123;
-}
+} // main
+
+// ============================================================================
+

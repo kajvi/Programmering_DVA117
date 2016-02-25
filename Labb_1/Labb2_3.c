@@ -1,9 +1,12 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
 // Daniel och Göran 20160204
 
-// ---------------------------------------------------------------------------- 
+// ============================================================================
 
-int comparer(int i_answer, int i_guess)
+static int comparer(int i_answer, int i_guess)
 {
     int directionOfGuess = 2;
 
@@ -26,9 +29,9 @@ int comparer(int i_answer, int i_guess)
     return directionOfGuess;
 } // comparer
 
-// ---------------------------------------------------------------------------- 
+// ============================================================================
 
-int main(void)
+int main23(void)
 {
     int guess, answer = 0;
     char repeatChar = '\0';
@@ -40,7 +43,7 @@ int main(void)
         int tryCount = 0;
 
         // Slumpar ett tal
-        srand(time(0));
+        srand((unsigned int)time(0));
         answer = rand() % 100 + 1;
 
         printf_s("You may now guess a number [1, 100] : \n");
@@ -49,8 +52,8 @@ int main(void)
             // Result returneras från comparer() och kan vara -1 = lågt, 0 = rätt, 1 = högt.
             int result = 2;
 
-            printf_s("Guess: ");
-            scanf_s("%d", &guess);
+            printf_s("Guess: %d ", scanf_s("%d", &guess));
+            //scanf_s("%d", &guess);
 
             result = comparer(answer, guess);
             tryCount = tryCount + 1;
@@ -81,7 +84,7 @@ int main(void)
             // Löser problemet med oönskade \n genom att läsa tills de är slut. 
             do
             {
-                scanf_s("%c", &repeatChar);
+                scanf_s("%c", &repeatChar, 1);
                 //printf_s("\n%d\n", repeatChar);
             } while (repeatChar == 10);
 
@@ -98,8 +101,9 @@ int main(void)
 
     printf_s("\nThank you for playing the \"Guess a Number\" Game!\n\n");
 
-    system("pause");
+    //system("pause");
     return 0;
+
 } // main
 
-// ---------------------------------------------------------------------------- 
+// ============================================================================
