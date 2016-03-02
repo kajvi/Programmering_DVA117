@@ -82,7 +82,7 @@ void printList(ItemStruct* ior_item, int listLength)
 
     for (i = 0; i < C_LIST_LENGTH; i++)
     {
-        printf_s("Name: %s\t Amount: %f\t Unit %s\t Unik Id: %d\n", (ior_item + i)->isName, (ior_item + i)->isAmount, (ior_item + i)->isUnit, (ior_item + i)->isId);
+        printf_s("Name: %s\t Amount: %f\t Unit: %s\t Unik Id: %d\n", (ior_item + i)->isName, (ior_item + i)->isAmount, (ior_item + i)->isUnit, (ior_item + i)->isId);
     }
 
 } // printList
@@ -99,7 +99,7 @@ void labb_51(void)
     printf_s("Welcome to the shopping list!\n\n");
     printf_s("You may now enter your items!\n");
 
-    // Setter unikt id till vilket nummer den har på listan
+    // Sätter unikt id till vilket nummer den har på listan
     for (i = 0; i < C_LIST_LENGTH; i++)
     {
         itemList[i].isId = i + 1;
