@@ -20,7 +20,7 @@ int isLetter(char i_ch)
 {
     int resInt = 0;
 
-    printf_s("%c, %d, %X\n", i_ch, i_ch, i_ch);
+    // printf_s("%c, %d, %X\n", i_ch, i_ch, i_ch);
     if ((i_ch >= 'A' && i_ch <= 'Z') ||
         (i_ch >= 'a' && i_ch <= 'z') ||
         (i_ch == C_DOS_AA) || (i_ch == C_DOS_AE) || (i_ch == C_DOS_OE) ||

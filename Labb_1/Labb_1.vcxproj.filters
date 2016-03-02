@@ -54,10 +54,24 @@
     <ClCompile Include="Labb4_3.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Labb2_3_GF.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GetNumberWithoutENTER.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Block1_Main.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="test.bat">
       <Filter>Source Files</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GetNumberWithoutENTER.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

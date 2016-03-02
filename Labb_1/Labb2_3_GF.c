@@ -120,7 +120,7 @@ int main23_GF(void)
 				break;
 			}
             
-        } while (1 == 1);
+        } while (1);
     } while (repeatChar == 'y');
 
     printf_s("\nThank you for playing the \"Guess a Number\" Game!\n\n");
