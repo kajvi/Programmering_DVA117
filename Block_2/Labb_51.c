@@ -13,7 +13,10 @@
 // Defines för itemStruct
 #define C_ITEM_NAME_LENGTH 30
 #define C_UNIT_NAME_LENGTH 30
-#define C_LIST_LENGTH 5
+#define C_LIST_LENGTH 1
+
+// Defines for readLine
+#define C_BUFFER_SIZE 80
 
 struct itemStruct
 {
@@ -24,6 +27,51 @@ struct itemStruct
 };
 typedef struct itemStruct ItemStruct;
 
+// ============================================================================
+
+// Returns FALSE if: Nothing was read, Input out of range, Input cut off by fgets before EOL. 
+// Return TRUE if a line was read including EOL, which is stripped from the target-array.
+
+int readLine(char* ior_chArr, int i_sizeChArr)
+{
+    int index = 0;
+    char bufferChArr[C_BUFFER_SIZE];
+    void *fgetsReturnPtr;
+
+    fgetsReturnPtr = fgets(bufferChArr, C_BUFFER_SIZE, stdin);
+
+    if (fgetsReturnPtr == NULL)
+    {
+        return FALSE;
+    }
+    
+    do
+    {
+        if (index >= i_sizeChArr || index >= C_BUFFER_SIZE)
+        {
+            ior_chArr[index - 1] = '\0';
+            return FALSE;
+        }
+
+        if (bufferChArr[index] == '\0')
+        {
+            ior_chArr[index] = '\0';
+            return FALSE;
+        }
+
+        // Vi har en korrekt, inläsning spara den.
+        if (bufferChArr[index] == C_RADSLUT)
+        {
+            ior_chArr[index] = '\0';
+            return TRUE;
+        }
+
+        ior_chArr[index] = bufferChArr[index];
+        index++;
+
+    } while (TRUE);
+
+} //readLine
 
 // ============================================================================
 
@@ -44,10 +92,20 @@ static void flushRestOfLine(void)
 void inputItem(ItemStruct* ior_item)
 {
     int numberOfArgumentsRecived;
+    int okFlag;
 
+    do
+    {
     printf_s("Name of item %d: ", (*ior_item).isId);
-    scanf_s("%s", &ior_item->isName[0], sizeof(ior_item->isName));
-    flushRestOfLine();
+    okFlag = readLine(ior_item->isName, sizeof(ior_item->isName));
+  
+    if (true)
+    {
+        ior_item.isName[0] == 
+    }
+    // scanf_s("%s", &ior_item->isName[0], sizeof(ior_item->isName)); // Bryter vid mellanslag
+    // flushRestOfLine();
+    } while (okFlag);
 
     do
     {
@@ -63,11 +121,13 @@ void inputItem(ItemStruct* ior_item)
         {
             printf_s("*** Please enter a number! ***\n");
         }
-    } while (1);
+    } while (TRUE);
 
     printf_s("Enter the Unit: ");
-    scanf_s("%s", &ior_item->isUnit[0], C_UNIT_NAME_LENGTH);
-    flushRestOfLine();
+    okFlag = readLine(ior_item->isUnit, sizeof(ior_item->isUnit));
+
+    // scanf_s("%s", &ior_item->isUnit[0], C_UNIT_NAME_LENGTH);
+    // flushRestOfLine();
 } // inputItem
 
 
