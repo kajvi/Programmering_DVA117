@@ -13,7 +13,7 @@
 // Defines för itemStruct
 #define C_ITEM_NAME_LENGTH 30
 #define C_UNIT_NAME_LENGTH 30
-#define C_LIST_LENGTH 1
+#define C_LIST_LENGTH 3
 
 // Defines for readLine
 #define C_BUFFER_SIZE 80
@@ -44,7 +44,7 @@ int readLine(char* ior_chArr, int i_sizeChArr)
     {
         return FALSE;
     }
-    
+
     do
     {
         if (index >= i_sizeChArr || index >= C_BUFFER_SIZE)
@@ -96,16 +96,23 @@ void inputItem(ItemStruct* ior_item)
 
     do
     {
-    printf_s("Name of item %d: ", (*ior_item).isId);
-    okFlag = readLine(ior_item->isName, sizeof(ior_item->isName));
-  
-    if (true)
-    {
-        ior_item.isName[0] == 
-    }
-    // scanf_s("%s", &ior_item->isName[0], sizeof(ior_item->isName)); // Bryter vid mellanslag
-    // flushRestOfLine();
-    } while (okFlag);
+        printf_s("Name of item %d: ", (*ior_item).isId);
+        okFlag = readLine(ior_item->isName, sizeof(ior_item->isName));
+
+        if (ior_item->isName[0] == '\0')
+        {
+            printf_s("Name cannot be empty!\n");
+            okFlag = FALSE;
+        }
+        else if (okFlag == FALSE)
+        {
+            // Inmatningen är för lång.
+            printf_s("WARNING! The entered Name has been truncated!\n");
+            okFlag = TRUE;
+        }
+        // scanf_s("%s", &ior_item->isName[0], sizeof(ior_item->isName)); // Bryter vid mellanslag
+        // flushRestOfLine();
+    } while (!okFlag);
 
     do
     {
@@ -131,24 +138,44 @@ void inputItem(ItemStruct* ior_item)
 } // inputItem
 
 
-// ============================================================================
-
+  // ============================================================================
 
 void printList(ItemStruct* ior_item, int listLength)
 {
     int i = 0;
+    unsigned int maxNameLength = 0;
+    unsigned int maxUnitLength = 0;
+    char formatStr[100];
 
     printf_s("The items on the list are...\n");
 
+    // Find length of longest text string...
     for (i = 0; i < C_LIST_LENGTH; i++)
     {
-        printf_s("Name: %s\t Amount: %f\t Unit: %s\t Unik Id: %d\n", (ior_item + i)->isName, (ior_item + i)->isAmount, (ior_item + i)->isUnit, (ior_item + i)->isId);
+        if (strlen(ior_item[i].isName) > maxNameLength)
+        {
+            maxNameLength = strlen(ior_item[i].isName);
+        }
+        if (strlen(ior_item[i].isUnit) > maxUnitLength)
+        {
+            maxUnitLength = strlen(ior_item[i].isUnit);
+        }
+    }
+
+    // Created adapted format string for the list
+    // %.3g ger 3 signifikanta siffror men ger för vissa värden utskrift i grundpotensform
+    sprintf_s(&formatStr[0], 100, "%%3d %%%ds %%6.3g %%%ds\n", maxNameLength, maxUnitLength);
+
+    // Print list...
+    for (i = 0; i < C_LIST_LENGTH; i++)
+    {
+        printf_s(formatStr, (ior_item + i)->isId, (ior_item + i)->isName, (ior_item + i)->isAmount, (ior_item + i)->isUnit);
     }
 
 } // printList
 
 
-// ============================================================================
+  // ============================================================================
 
 
 void labb_51(void)

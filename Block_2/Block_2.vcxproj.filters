@@ -21,5 +21,8 @@
     <ClCompile Include="Labb_51.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Labb_61.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
