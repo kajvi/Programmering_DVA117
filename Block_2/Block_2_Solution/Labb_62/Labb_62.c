@@ -2,6 +2,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <conio.h>
 
 #define TRUE -1
 #define FALSE 0
@@ -29,6 +31,23 @@ struct itemStruct
     int isId;
 };
 typedef struct itemStruct ItemStruct;
+
+
+
+// ============================================================================
+
+static void flushRestOfLine(void)
+{
+    // Call ONLY when EOL expected from the keyboardstream.
+
+    char ch;
+    do
+    {
+        scanf_s("%c", &ch, 1);
+        //printf_s("\n%d\n", ch);
+    } while (ch != C_RADSLUT);
+}// flushRestOfLine
+
 
 
 // ============================================================================
@@ -108,8 +127,8 @@ void inputItem(ItemStruct* ior_item)
     do
     {
         printf_s("Number of this item: ");
-        numberOfArgumentsRecived = scanf_s("%f", &ior_item->isAmount, sizeof(ior_item->isAmount)); // Space after %f replaces flushRestOfLine
-                                                                                                   //flushRestOfLine();
+        numberOfArgumentsRecived = scanf_s("%f", &ior_item->isAmount); // Space after %f replaces flushRestOfLine
+        flushRestOfLine();
 
         if (numberOfArgumentsRecived == 1)
         {
@@ -197,8 +216,8 @@ void printMeny()
 ItemStruct* loadItemList()
 {
     // Läser in en lista från en fil.
-    ItemStruct* adress;
-    int errorFlag;
+    ItemStruct* adress = NULL;
+    //int errorFlag;
 
     //...
 
@@ -210,7 +229,7 @@ ItemStruct* loadItemList()
 int saveItemList(ItemStruct* ir_itemList, int ir_listSize)
 {
     // Sparar en itemList till en fil fil.
-    int errorFlag;
+    int errorFlag = 1;
 
     //...
 

@@ -19,9 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{AF18CF1C-E71C-402D-ADB1-F1523767A1D6}</ProjectGuid>
+    <ProjectGuid>{47988BCF-E950-45A9-A345-1A58E8A0D5AE}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Labb_61</RootNamespace>
+    <RootNamespace>Labb_62</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -142,7 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Labb_61.c" />
+    <ClCompile Include="Labb_62.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

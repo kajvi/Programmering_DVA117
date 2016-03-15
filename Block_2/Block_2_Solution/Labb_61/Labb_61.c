@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <conio.h>
 
 #define TRUE -1
 #define FALSE 0
@@ -31,6 +32,20 @@ struct itemStruct
 };
 typedef struct itemStruct ItemStruct;
 
+
+// ============================================================================
+
+static void flushRestOfLine(void)
+{
+    // Call ONLY when EOL expected from the keyboardstream.
+
+    char ch;
+    do
+    {
+        scanf_s("%c", &ch, 1);
+        //printf_s("\n%d\n", ch);
+    } while (ch != C_RADSLUT);
+}// flushRestOfLine
 
 // ============================================================================
 
@@ -110,7 +125,8 @@ void inputItem(ItemStruct* ior_item)
     {
         printf_s("Number of this item: ");
         numberOfArgumentsRecived = scanf_s("%f", &ior_item->isAmount); // Space after %f replaces flushRestOfLine
-                                                                                                   //flushRestOfLine();
+        flushRestOfLine();
+
         if (numberOfArgumentsRecived == 1)
         {
             break;
@@ -132,11 +148,13 @@ void inputItem(ItemStruct* ior_item)
   // ============================================================================
 
 // Dynamisk Minneshantering
-ItemStruct* addItemToListinHeap(ItemStruct* ior_itemList, int i_currItemCount)
+ItemStruct* addItemToListinHeap(ItemStruct* ior_itemList, int* ior_currItemCount)
 {
     ItemStruct* ptr;
     ptr = (ItemStruct*)realloc(ior_itemList, sizeof(ItemStruct));
-    inputItem(&ptr[i_currItemCount]);
+    ptr[*ior_currItemCount].isId = *ior_currItemCount+1;
+    inputItem(&ptr[*ior_currItemCount]);
+    (*ior_currItemCount)++;
     return ptr;
 } //addItemToListinHeap
 
@@ -207,15 +225,15 @@ void main(void)
     do
     {
         printMeny();
-        selection = getc(stdin);
+        selection = _getch();
+        printf_s("%c\n", selection);
 
         switch (selection)
         {
         case '1':
         {
             // 1 - Add item to itemlist.
-            itemCount++;
-            itemList = addItemToListinHeap(itemList, itemCount);
+            itemList = addItemToListinHeap(itemList, &itemCount);
             break;
         }
         case '2':
@@ -237,4 +255,6 @@ void main(void)
     } while (continueFlag);
 
     printf_s("Thank you for using the shopping list!\n\n");
+
+    free(itemList);
 } // Main
