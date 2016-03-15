@@ -198,7 +198,7 @@ void printList(ItemStruct* ior_item, int listLength)
 // ============================================================================
 
 
-void labb_51(void)
+void main(void)
 {
     ItemStruct itemList[C_LIST_LENGTH];
     int i = 0;

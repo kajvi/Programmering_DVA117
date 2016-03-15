@@ -15,10 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Labb_51.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Main.c">
+    <ClCompile Include="..\Labb_51-gf.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
