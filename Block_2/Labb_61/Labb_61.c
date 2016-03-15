@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define TRUE -1
 #define FALSE 0
@@ -108,9 +109,8 @@ void inputItem(ItemStruct* ior_item)
     do
     {
         printf_s("Number of this item: ");
-        numberOfArgumentsRecived = scanf_s("%f", &ior_item->isAmount, sizeof(ior_item->isAmount)); // Space after %f replaces flushRestOfLine
+        numberOfArgumentsRecived = scanf_s("%f", &ior_item->isAmount); // Space after %f replaces flushRestOfLine
                                                                                                    //flushRestOfLine();
-
         if (numberOfArgumentsRecived == 1)
         {
             break;
@@ -131,13 +131,14 @@ void inputItem(ItemStruct* ior_item)
 
   // ============================================================================
 
-ItemStruct* addItemToList(ItemStruct* ior_itemList, int i_currItemCount)
+// Dynamisk Minneshantering
+ItemStruct* addItemToListinHeap(ItemStruct* ior_itemList, int i_currItemCount)
 {
     ItemStruct* ptr;
     ptr = (ItemStruct*)realloc(ior_itemList, sizeof(ItemStruct));
     inputItem(&ptr[i_currItemCount]);
     return ptr;
-} //addItemToList
+} //addItemToListinHeap
 
 
   // ============================================================================
@@ -182,48 +183,20 @@ void printList(ItemStruct* ior_itemList, int i_listLength)
 void printMeny()
 {
     printf_s("1 - Add item to itemlist. \n");
-    printf_s("2 - Load itemlist from file. \n");
-    printf_s("3 - Print itemlist. \n");
-    printf_s("4 - Save itemlist to file. \n");
-    printf_s("5 - Edit item in itemlist. \n");
-    printf_s("6 - Delete item in itemlist. \n");
-    printf_s("7 - Exit Program. \n");
+    printf_s("2 - Print itemlist. \n");
+    printf_s("3 - Exit Program. \n");
 
     printf_s("Enter selection: ");
 }
 
 // ============================================================================
 
-ItemStruct* loadItemList()
-{
-    // Läser in en lista från en fil.
-    ItemStruct* adress;
-    int errorFlag;
-
-    //...
-
-    return adress;
-}
-
-// ============================================================================
-
-int saveItemList(ItemStruct* ir_itemList, int ir_listSize)
-{
-    // Sparar en itemList till en fil fil.
-    int errorFlag;
-
-    //...
-
-    return errorFlag;
-}
-
-// ============================================================================
 
 void main(void)
 {
     ItemStruct *itemList;
     int itemCount = 0;
-    int selection;
+    char selection;
     int errorFlag = TRUE;
     int continueFlag = TRUE;
 
@@ -238,43 +211,22 @@ void main(void)
 
         switch (selection)
         {
-        case 1:
+        case '1':
         {
             // 1 - Add item to itemlist.
-            itemList = addItemToList(itemList, itemCount);
+            itemCount++;
+            itemList = addItemToListinHeap(itemList, itemCount);
             break;
         }
-        case 2:
+        case '2':
         {
-            // 2 - Load itemlist from file
-            itemList = loadItemList();
+            // 2 - Print itemlist
+            printList(itemList, itemCount);
             break;
         }
-        case 3:
+        case '3':
         {
-            // 3 - Print itemlist
-            break;
-        }
-        case 4:
-        {
-            // 4 - Save itemlist to file.
-            errorFlag = saveItemList(itemList, itemCount);
-            break;
-        }
-        case 5:
-        {
-            // 5 - Edit item in itemlist. 
-            break;
-        }
-        case 6:
-        {
-            // 6 - Delete item in itemlist.
-
-            break;
-        }
-        case 7:
-        {
-            // 7 - Exit Program.
+            // 3 - Exit Program.
             continueFlag = FALSE;
             break;
         }
