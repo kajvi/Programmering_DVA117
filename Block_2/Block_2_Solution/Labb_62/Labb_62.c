@@ -33,7 +33,6 @@ struct itemStruct
 typedef struct itemStruct ItemStruct;
 
 
-
 // ============================================================================
 
 static void flushRestOfLine(void)
@@ -47,8 +46,6 @@ static void flushRestOfLine(void)
         //printf_s("\n%d\n", ch);
     } while (ch != C_RADSLUT);
 }// flushRestOfLine
-
-
 
 // ============================================================================
 
@@ -150,13 +147,16 @@ void inputItem(ItemStruct* ior_item)
 
   // ============================================================================
 
-ItemStruct* addItemToList(ItemStruct* ior_itemList, int i_currItemCount)
+// Dynamisk Minneshantering
+ItemStruct* addItemToListinHeap(ItemStruct* ior_itemList, int* ior_currItemCount)
 {
     ItemStruct* ptr;
     ptr = (ItemStruct*)realloc(ior_itemList, sizeof(ItemStruct));
-    inputItem(&ptr[i_currItemCount]);
+    ptr[*ior_currItemCount].isId = *ior_currItemCount + 1;
+    inputItem(&ptr[*ior_currItemCount]);
+    (*ior_currItemCount)++;
     return ptr;
-} //addItemToList
+} //addItemToListinHeap
 
 
   // ============================================================================
@@ -168,31 +168,37 @@ void printList(ItemStruct* ior_itemList, int i_listLength)
     unsigned int maxUnitLength = 0;
     char formatStr[100];
 
-    printf_s("The items on the list are...\n");
-
-    // Find length of longest text string...
-    for (i = 0; i < i_listLength; i++)
+    if (i_listLength == 0)
     {
-        if (strlen(ior_itemList[i].isName) > maxNameLength)
+        printf_s("The list is empty!\n");
+    }
+    else
+    {
+        printf_s("The items on the list are...\n");
+
+        // Find length of longest text string...
+        for (i = 0; i < i_listLength; i++)
         {
-            maxNameLength = strlen(ior_itemList[i].isName);
+            if (strlen(ior_itemList[i].isName) > maxNameLength)
+            {
+                maxNameLength = strlen(ior_itemList[i].isName);
+            }
+            if (strlen(ior_itemList[i].isUnit) > maxUnitLength)
+            {
+                maxUnitLength = strlen(ior_itemList[i].isUnit);
+            }
         }
-        if (strlen(ior_itemList[i].isUnit) > maxUnitLength)
+
+        // Created adapted format string for the list
+        // %.3g ger 3 signifikanta siffror men ger för vissa värden utskrift i grundpotensform
+        sprintf_s(&formatStr[0], 100, "%%3d %%%ds %%6.3g %%%ds\n", maxNameLength, maxUnitLength);
+
+        // Print list...
+        for (i = 0; i < i_listLength; i++)
         {
-            maxUnitLength = strlen(ior_itemList[i].isUnit);
+            printf_s(formatStr, (ior_itemList + i)->isId, (ior_itemList + i)->isName, (ior_itemList + i)->isAmount, (ior_itemList + i)->isUnit);
         }
     }
-
-    // Created adapted format string for the list
-    // %.3g ger 3 signifikanta siffror men ger för vissa värden utskrift i grundpotensform
-    sprintf_s(&formatStr[0], 100, "%%3d %%%ds %%6.3g %%%ds\n", maxNameLength, maxUnitLength);
-
-    // Print list...
-    for (i = 0; i < i_listLength; i++)
-    {
-        printf_s(formatStr, (ior_itemList + i)->isId, (ior_itemList + i)->isName, (ior_itemList + i)->isAmount, (ior_itemList + i)->isUnit);
-    }
-
 } // printList
 
 
@@ -200,6 +206,7 @@ void printList(ItemStruct* ior_itemList, int i_listLength)
 
 void printMeny()
 {
+    printf_s("\n");
     printf_s("1 - Add item to itemlist. \n");
     printf_s("2 - Load itemlist from file. \n");
     printf_s("3 - Print itemlist. \n");
@@ -242,66 +249,70 @@ void main(void)
 {
     ItemStruct *itemList;
     int itemCount = 0;
-    int selection;
+    char selection;
     int errorFlag = TRUE;
     int continueFlag = TRUE;
 
-    printf_s("Welcome to the shopping list!\n\n");
+    printf_s("Welcome to the shopping list!\n");
 
     itemList = (ItemStruct*)malloc(sizeof(ItemStruct));
 
     do
     {
         printMeny();
-        selection = getc(stdin);
+        selection = _getch();
+        printf_s("%c\n\n", selection);
 
         switch (selection)
         {
-        case 1:
+        case '1':
         {
             // 1 - Add item to itemlist.
-            itemList = addItemToList(itemList, itemCount);
+            itemList = addItemToListinHeap(itemList, &itemCount);
             break;
         }
-        case 2:
+        case '2':
         {
             // 2 - Load itemlist from file
             itemList = loadItemList();
             break;
         }
-        case 3:
+        case '3':
         {
             // 3 - Print itemlist
+			printList(itemList, itemCount);
             break;
         }
-        case 4:
+        case '4':
         {
             // 4 - Save itemlist to file.
             errorFlag = saveItemList(itemList, itemCount);
             break;
         }
-        case 5:
+        case '5':
         {
             // 5 - Edit item in itemlist. 
             break;
         }
-        case 6:
+        case '6':
         {
             // 6 - Delete item in itemlist.
 
             break;
         }
-        case 7:
+        case '7':
         {
             // 7 - Exit Program.
             continueFlag = FALSE;
             break;
         }
         default:
-            printf_s("Please select a number between 1 and 7!\n\n");
+            printf_s("*** Please select a number between 1 and 7! ***\n");
             break;
         }
     } while (continueFlag);
 
     printf_s("Thank you for using the shopping list!\n\n");
+
+    free(itemList);
 } // Main
