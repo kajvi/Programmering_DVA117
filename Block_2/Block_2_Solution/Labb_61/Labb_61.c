@@ -152,7 +152,7 @@ ItemStruct* addItemToListinHeap(ItemStruct* ior_itemList, int* ior_currItemCount
 {
     ItemStruct* ptr;
     ptr = (ItemStruct*)realloc(ior_itemList, sizeof(ItemStruct));
-    ptr[*ior_currItemCount].isId = *ior_currItemCount+1;
+    ptr[*ior_currItemCount].isId = *ior_currItemCount + 1;
     inputItem(&ptr[*ior_currItemCount]);
     (*ior_currItemCount)++;
     return ptr;
@@ -168,31 +168,37 @@ void printList(ItemStruct* ior_itemList, int i_listLength)
     unsigned int maxUnitLength = 0;
     char formatStr[100];
 
-    printf_s("The items on the list are...\n");
-
-    // Find length of longest text string...
-    for (i = 0; i < i_listLength; i++)
+    if (i_listLength == 0)
     {
-        if (strlen(ior_itemList[i].isName) > maxNameLength)
+        printf_s("The list is empty!\n");
+    }
+    else
+    {
+        printf_s("The items on the list are...\n");
+
+        // Find length of longest text string...
+        for (i = 0; i < i_listLength; i++)
         {
-            maxNameLength = strlen(ior_itemList[i].isName);
+            if (strlen(ior_itemList[i].isName) > maxNameLength)
+            {
+                maxNameLength = strlen(ior_itemList[i].isName);
+            }
+            if (strlen(ior_itemList[i].isUnit) > maxUnitLength)
+            {
+                maxUnitLength = strlen(ior_itemList[i].isUnit);
+            }
         }
-        if (strlen(ior_itemList[i].isUnit) > maxUnitLength)
+
+        // Created adapted format string for the list
+        // %.3g ger 3 signifikanta siffror men ger för vissa värden utskrift i grundpotensform
+        sprintf_s(&formatStr[0], 100, "%%3d %%%ds %%6.3g %%%ds\n", maxNameLength, maxUnitLength);
+
+        // Print list...
+        for (i = 0; i < i_listLength; i++)
         {
-            maxUnitLength = strlen(ior_itemList[i].isUnit);
+            printf_s(formatStr, (ior_itemList + i)->isId, (ior_itemList + i)->isName, (ior_itemList + i)->isAmount, (ior_itemList + i)->isUnit);
         }
     }
-
-    // Created adapted format string for the list
-    // %.3g ger 3 signifikanta siffror men ger för vissa värden utskrift i grundpotensform
-    sprintf_s(&formatStr[0], 100, "%%3d %%%ds %%6.3g %%%ds\n", maxNameLength, maxUnitLength);
-
-    // Print list...
-    for (i = 0; i < i_listLength; i++)
-    {
-        printf_s(formatStr, (ior_itemList + i)->isId, (ior_itemList + i)->isName, (ior_itemList + i)->isAmount, (ior_itemList + i)->isUnit);
-    }
-
 } // printList
 
 
@@ -200,6 +206,7 @@ void printList(ItemStruct* ior_itemList, int i_listLength)
 
 void printMeny()
 {
+    printf_s("\n");
     printf_s("1 - Add item to itemlist. \n");
     printf_s("2 - Print itemlist. \n");
     printf_s("3 - Exit Program. \n");
@@ -218,7 +225,7 @@ void main(void)
     int errorFlag = TRUE;
     int continueFlag = TRUE;
 
-    printf_s("Welcome to the shopping list!\n\n");
+    printf_s("Welcome to the shopping list!\n");
 
     itemList = (ItemStruct*)malloc(sizeof(ItemStruct));
 
@@ -226,7 +233,7 @@ void main(void)
     {
         printMeny();
         selection = _getch();
-        printf_s("%c\n", selection);
+        printf_s("%c\n\n", selection);
 
         switch (selection)
         {
@@ -249,7 +256,7 @@ void main(void)
             break;
         }
         default:
-            printf_s("Please select a number between 1 and 7!\n\n");
+            printf_s("*** Please select a number between 1 and 3! ***\n");
             break;
         }
     } while (continueFlag);
