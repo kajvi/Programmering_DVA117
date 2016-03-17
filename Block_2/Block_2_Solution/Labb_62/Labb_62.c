@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <conio.h>
+#include <windows.h>
 
 #define TRUE -1
 #define FALSE 0
@@ -150,11 +151,18 @@ void inputItem(ItemStruct* ior_item)
 // Dynamisk Minneshantering
 ItemStruct* addItemToListinHeap(ItemStruct* ior_itemList, int* ior_currItemCount)
 {
+    // ior_currItemCount ger os antalet föremål som finns i listan just nu.
+    // Anropet till realloc behöver ett föremål extra: därav ior_currItemCount + 1
+    // När realloc framgångsrikt returnerat en pekare till det nya minnet räknas ior_currItemCount upp.
+    // Annars returneras en Nullpekare.
     ItemStruct* ptr;
-    ptr = (ItemStruct*)realloc(ior_itemList, sizeof(ItemStruct));
-    ptr[*ior_currItemCount].isId = *ior_currItemCount + 1;
-    inputItem(&ptr[*ior_currItemCount]);
-    (*ior_currItemCount)++;
+    ptr = (ItemStruct*)realloc(ior_itemList, sizeof(ItemStruct)*(*ior_currItemCount + 1));
+    if (ptr != NULL)
+    {
+        ptr[*ior_currItemCount].isId = *ior_currItemCount + 1;
+        inputItem(&ptr[*ior_currItemCount]);
+        (*ior_currItemCount)++;
+    }
     return ptr;
 } //addItemToListinHeap
 
@@ -245,9 +253,9 @@ int saveItemList(ItemStruct* ir_itemList, int ir_listSize)
 
 // ============================================================================
 
-void main(void)
+int main(void)
 {
-    ItemStruct *itemList;
+    ItemStruct *itemList = NULL;
     int itemCount = 0;
     char selection;
     int errorFlag = TRUE;
@@ -259,9 +267,18 @@ void main(void)
 
     do
     {
+        if (itemList == NULL)
+        {
+            printf_s("\n");
+            printf_s("*** Out of Memory! Program abort! ***\n");
+            Sleep(1000);
+            return 1;
+        }
         printMeny();
         selection = _getch();
         printf_s("%c\n\n", selection);
+        Sleep(400);
+
 
         switch (selection)
         {
@@ -315,4 +332,6 @@ void main(void)
     printf_s("Thank you for using the shopping list!\n\n");
 
     free(itemList);
+    itemList = NULL;
+    return 0;
 } // Main
