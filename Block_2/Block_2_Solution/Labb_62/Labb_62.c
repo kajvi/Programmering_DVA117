@@ -133,15 +133,20 @@ void inputFilename(char* ior_fileName, int i_maxLength)
 
     printf_s("Hit Enter to use Current File Name: (\"%s\") ", ior_fileName, i_maxLength);
     printf_s("or input New File Name!\n)");
-    printf_s("Enter File Name = %s = ", ior_fileName, i_maxLength);
+    
 
     do
     {
-        okFlag = readLine(ior_fileName, i_maxLength);
-
-
+        printf_s("Enter File Name = %s = ", ior_fileName, i_maxLength);
+        okFlag = readLine(tempInputPtr, i_maxLength);
+        if (okFlag == FALSE)
+        {
+            printf_s("*** Input not accepted! Please try again! ***\n");
+        }
     } while (!okFlag);
     
+    strcpy(ior_fileName, tempInputPtr);
+    free(tempInputPtr);
 }
 
 
