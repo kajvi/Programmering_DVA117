@@ -4,10 +4,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <conio.h>
-#include <windows.h>
 
+#ifndef TRUE
 #define TRUE -1
 #define FALSE 0
+#endif // !TRUE
+
+#include <windows.h>
+
 
 
 // Defines för flushRestOfLine
@@ -23,6 +27,13 @@
 
 // Defines för Main
 #define C_LIST_BUFFER 10
+#define C_FILE_NAME_LENGTH 80
+
+struct fileHeader
+{
+    int sf_recordCount;
+};
+typedef struct fileHeader FileHeader;
 
 struct itemStruct
 {
@@ -32,6 +43,16 @@ struct itemStruct
     int isId;
 };
 typedef struct itemStruct ItemStruct;
+
+// ============================================================================
+
+void systemAbort(char* ir_message) 
+{
+    printf_s("\n\n ***** %s ****** \n\n", ir_message);
+    Sleep(2000);
+    exit(EXIT_FAILURE);
+} // systemAbort
+
 
 
 // ============================================================================
@@ -49,6 +70,8 @@ static void flushRestOfLine(void)
 }// flushRestOfLine
 
 // ============================================================================
+
+
 
 // Returns FALSE if: Nothing was read, Input out of range, Input cut off by fgets before EOL. 
 // Return TRUE if a line was read including EOL, which is stripped from the target-array.
@@ -94,8 +117,35 @@ int readLine(char* ior_chArr, int i_sizeChArr)
 
 } //readLine
 
-  // ============================================================================
+// ============================================================================
 
+
+
+void inputFilename(char* ior_fileName, int i_maxLength)
+{
+    int okFlag = FALSE;
+    char* tempInputPtr;
+    tempInputPtr = malloc(sizeof(char) * i_maxLength);
+    if (tempInputPtr == NULL)
+    {
+        systemAbort("Out of memory");
+    }
+
+    printf_s("Hit Enter to use Current File Name: (\"%s\") ", ior_fileName, i_maxLength);
+    printf_s("or input New File Name!\n)");
+    printf_s("Enter File Name = %s = ", ior_fileName, i_maxLength);
+
+    do
+    {
+        okFlag = readLine(ior_fileName, i_maxLength);
+
+
+    } while (!okFlag);
+    
+}
+
+
+// ============================================================================
 
 void inputItem(ItemStruct* ior_item)
 {
@@ -104,6 +154,7 @@ void inputItem(ItemStruct* ior_item)
 
     do
     {
+        //TODO (Extra): Blanka alla ch_arr innan vi skriver till dem!!
         printf_s("Name of item %d: ", (*ior_item).isId);
         okFlag = readLine(ior_item->isName, sizeof(ior_item->isName));
 
@@ -146,7 +197,9 @@ void inputItem(ItemStruct* ior_item)
 } // inputItem
 
 
-  // ============================================================================
+
+
+// ============================================================================
 
 // Dynamisk Minneshantering
 ItemStruct* addItemToListinHeap(ItemStruct* ior_itemList, int* ior_currItemCount)
@@ -210,6 +263,7 @@ void printList(ItemStruct* ior_itemList, int i_listLength)
 } // printList
 
 
+
   // ============================================================================
 
 void printMeny()
@@ -224,32 +278,115 @@ void printMeny()
     printf_s("7 - Exit Program. \n");
 
     printf_s("Enter selection: ");
-}
+} // printMeny
+
+
 
 // ============================================================================
 
-ItemStruct* loadItemList()
+// Returnerar NULL om det gått åt pipan.
+ItemStruct* loadItemList(char* ir_fileName, int* or_listSize)
 {
-    // Läser in en lista från en fil.
-    ItemStruct* adress = NULL;
-    //int errorFlag;
+    ItemStruct* itemListPtr = NULL;
+    FILE* fp = NULL;
+    FileHeader fHeader;
+    int readRecordCount;
+    int errorFlag;
 
-    //...
+    // Om vi inte lyckas läsa fileHeader initieras denna till 0.
+    *or_listSize = 0;
 
-    return adress;
-}
+    errorFlag = fopen_s(&fp, ir_fileName, "rb");
+    if (fp == NULL || errorFlag != 0)
+    {
+        return NULL;
+    }
+
+    // Läs File Header till listSize;
+    readRecordCount = fread(&fHeader, sizeof(FileHeader), 1, fp); // Innehållet i i_listSize skrivs till file.
+    if (readRecordCount != 1)
+    {
+        return NULL;
+    }
+    
+    *or_listSize = fHeader.sf_recordCount;
+    itemListPtr = malloc(sizeof(ItemStruct) * (*or_listSize));
+    if (itemListPtr == NULL)
+    {
+        *or_listSize = 0; // Vi har inte fått minne till alla poster vi ville läsa.
+        free(itemListPtr);
+        itemListPtr = NULL;
+        return NULL;
+    }
+
+    // Läs listan till Minnet
+    readRecordCount = fread(itemListPtr, sizeof(ItemStruct), *or_listSize, fp); // Innehållet i i_listSize skrivs till file.
+    if (readRecordCount != fHeader.sf_recordCount)
+    {
+        *or_listSize = 0; // Vi kunde inte läsa in alla poster vi förväntade oss.
+        free(itemListPtr);
+        itemListPtr = NULL;
+        return NULL;
+    }
+
+
+    errorFlag = fclose(fp); // returnerar 0 om allt gått bra.
+    if (errorFlag != 0)
+    {
+        *or_listSize = 0; // Vi kunde inte stänga filen, vi litar inte på resultatet
+        free(itemListPtr);
+        itemListPtr = NULL;
+        return NULL;
+    }
+
+    return itemListPtr;
+} // loadItemList
+
+
 
 // ============================================================================
 
-int saveItemList(ItemStruct* ir_itemList, int ir_listSize)
+// Returnerar TRUE om allt gick bra, annars returnerar den FALSE
+int saveItemList(char* ir_fileName, ItemStruct* ir_itemList, int i_listSize)
 {
-    // Sparar en itemList till en fil fil.
-    int errorFlag = 1;
+    FILE* fp = NULL;
+    FileHeader fHeader;
+    int writenRecordCount;
+    int errorFlag;
 
-    //...
+    errorFlag = fopen_s(&fp, ir_fileName, "wb");
+    // fp = fopen(ir_fileName, "wb");
+    if (fp == NULL || errorFlag != 0)
+    {
+        return FALSE;
+    }
 
-    return errorFlag;
-}
+    // Uppdatera File Header till listSize;
+    fHeader.sf_recordCount = i_listSize;
+    writenRecordCount = fwrite(&fHeader, sizeof(FileHeader), 1, fp); // Innehållet i i_listSize skrivs till file.
+    if (writenRecordCount != 1)
+    {
+        return FALSE;
+    }
+
+    // Skriv in Hela listan till filen
+    writenRecordCount = fwrite(ir_itemList, sizeof(ItemStruct), fHeader.sf_recordCount, fp); // Innehållet i i_listSize skrivs till file.
+    if (writenRecordCount != fHeader.sf_recordCount)
+    {
+        return FALSE;
+    }
+
+
+    errorFlag = fclose(fp); // returnerar 0 om allt gått bra.
+    if (errorFlag != 0)
+    {
+        return FALSE;
+    }
+
+    return TRUE;
+} // saveItemList
+
+
 
 // ============================================================================
 
@@ -260,6 +397,7 @@ int main(void)
     char selection;
     int errorFlag = TRUE;
     int continueFlag = TRUE;
+    char fileName[C_FILE_NAME_LENGTH] = "test.bin";
 
     printf_s("Welcome to the shopping list!\n");
 
@@ -291,30 +429,34 @@ int main(void)
         case '2':
         {
             // 2 - Load itemlist from file
-            itemList = loadItemList();
+            // Vi ska ladda en lista, kasta bort den gamla
+            // TODO: Fråga om operatorn vill kasta den gamla listan: om inte återgå till menyn.
+            free(itemList);
+            itemList = loadItemList("test.bin", &itemCount);
             break;
         }
         case '3':
         {
             // 3 - Print itemlist
-			printList(itemList, itemCount);
+            printList(itemList, itemCount);
             break;
         }
         case '4':
         {
             // 4 - Save itemlist to file.
-            errorFlag = saveItemList(itemList, itemCount);
+            errorFlag = saveItemList("test.bin", itemList, itemCount);
             break;
         }
         case '5':
         {
             // 5 - Edit item in itemlist. 
+            // TODO:
             break;
         }
         case '6':
         {
             // 6 - Delete item in itemlist.
-
+            // TODO:
             break;
         }
         case '7':
