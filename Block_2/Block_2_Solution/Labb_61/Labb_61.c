@@ -4,10 +4,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <conio.h>
-#include <windows.h>
 
+#ifndef TRUE
 #define TRUE -1
 #define FALSE 0
+#endif // !TRUE
+
+#include <windows.h>
 
 
 // Defines för flushRestOfLine
