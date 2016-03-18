@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Labb_61_VS2010", "Labb_61_VS2010\Labb_61_VS2010.vcxproj", "{6634E46A-0B38-4EFE-A623-2D3104EB03ED}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Labb_62_VS2010", "Labb_62_VS2010\Labb_62_VS2010.vcxproj", "{DABC60E6-B2E4-494D-936C-957B300816FC}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Labb_5_VS2010", "Labb_5_VS2010\Labb_5_VS2010.vcxproj", "{0D8B2382-4F00-4463-BF96-ED10B77CEAC8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6634E46A-0B38-4EFE-A623-2D3104EB03ED}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6634E46A-0B38-4EFE-A623-2D3104EB03ED}.Debug|Win32.Build.0 = Debug|Win32
+		{6634E46A-0B38-4EFE-A623-2D3104EB03ED}.Release|Win32.ActiveCfg = Release|Win32
+		{6634E46A-0B38-4EFE-A623-2D3104EB03ED}.Release|Win32.Build.0 = Release|Win32
+		{DABC60E6-B2E4-494D-936C-957B300816FC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DABC60E6-B2E4-494D-936C-957B300816FC}.Debug|Win32.Build.0 = Debug|Win32
+		{DABC60E6-B2E4-494D-936C-957B300816FC}.Release|Win32.ActiveCfg = Release|Win32
+		{DABC60E6-B2E4-494D-936C-957B300816FC}.Release|Win32.Build.0 = Release|Win32
+		{0D8B2382-4F00-4463-BF96-ED10B77CEAC8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0D8B2382-4F00-4463-BF96-ED10B77CEAC8}.Debug|Win32.Build.0 = Debug|Win32
+		{0D8B2382-4F00-4463-BF96-ED10B77CEAC8}.Release|Win32.ActiveCfg = Release|Win32
+		{0D8B2382-4F00-4463-BF96-ED10B77CEAC8}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
