@@ -46,7 +46,7 @@ typedef struct itemStruct ItemStruct;
 
 // ============================================================================
 
-void systemAbort(char* ir_message) 
+void systemAbort(char* ir_message)
 {
     printf_s("\n\n ***** %s ****** \n\n", ir_message);
     Sleep(2000);
@@ -131,21 +131,21 @@ void inputFilename(char* ior_fileName, int i_maxLength)
         systemAbort("Out of memory");
     }
 
-    printf_s("Hit Enter to use Current File Name: (\"%s\") ", ior_fileName, i_maxLength);
+    printf_s("Hit Enter to use Current File Name: (\"%s\") ", ior_fileName);
     printf_s("or input New File Name!\n)");
-    
+
 
     do
     {
-        printf_s("Enter File Name = %s = ", ior_fileName, i_maxLength);
+        printf_s("Enter File Name = %s = ", ior_fileName);
         okFlag = readLine(tempInputPtr, i_maxLength);
         if (okFlag == FALSE)
         {
             printf_s("*** Input not accepted! Please try again! ***\n");
         }
     } while (!okFlag);
-    
-    strcpy(ior_fileName, tempInputPtr);
+
+    strcpy_s(ior_fileName, i_maxLength, tempInputPtr);
     free(tempInputPtr);
 }
 
@@ -207,20 +207,38 @@ void inputItem(ItemStruct* ior_item)
 // ============================================================================
 
 // Dynamisk Minneshantering
-ItemStruct* addItemToListinHeap(ItemStruct* ior_itemList, int* ior_currItemCount)
+ItemStruct* addItemToListinHeap(ItemStruct* ior_itemList, int* ior_currslotCount)
 {
-    // ior_currItemCount ger os antalet föremål som finns i listan just nu.
-    // Anropet till realloc behöver ett föremål extra: därav ior_currItemCount + 1
-    // När realloc framgångsrikt returnerat en pekare till det nya minnet räknas ior_currItemCount upp.
+    // ior_currslotCount ger os antalet möjliga föremål som finns i listan just nu.
+    // Anropet till realloc behöver ett föremål extra: därav ior_currslotCount + 1
+    // När realloc framgångsrikt returnerat en pekare till det nya minnet räknas ior_currslotCount upp.
     // Annars returneras en Nullpekare.
     ItemStruct* ptr;
-    ptr = (ItemStruct*)realloc(ior_itemList, sizeof(ItemStruct)*(*ior_currItemCount + 1));
+    int index;
+
+    // Undersöker om det finns lediga slots, om ja: återanvänd. 
+    // Unik ID refererar till plats i listan. Är inte knutet till föremålet.
+    for (index = 0; index < ior_currslotCount; index++)
+    {
+        if (ior_itemList[index].isId == 0)
+        {
+            ior_itemList[index].isId = index + 1;
+            addItem(&ior_itemList[index]);
+            return ior_itemList;
+        }
+    }
+
+    // Skapa en ny slott i listan och flytta den i heapen om det behövs.
+    ptr = (ItemStruct*)realloc(ior_itemList, sizeof(ItemStruct)*(*ior_currslotCount + 1));
     if (ptr != NULL)
     {
-        ptr[*ior_currItemCount].isId = *ior_currItemCount + 1;
-        inputItem(&ptr[*ior_currItemCount]);
-        (*ior_currItemCount)++;
+        // Om allokering framgångsrik: flytta till ledig possition och lägg till föremål.
+        ptr[*ior_currslotCount].isId = *ior_currslotCount + 1;
+        inputItem(&ptr[*ior_currslotCount]);
+        (*ior_currslotCount)++; // Uppdaterar antal slots i listan.
     }
+
+    // Returnera en pekare till listans start.
     return ptr;
 } //addItemToListinHeap
 
@@ -245,6 +263,10 @@ void printList(ItemStruct* ior_itemList, int i_listLength)
         // Find length of longest text string...
         for (i = 0; i < i_listLength; i++)
         {
+            if (ior_itemList[i].isId == 0)
+            {
+                continue; // Invers till Break fortsätt till nästa index i for-loopen (på den närmaste övre nivån).
+            }
             if (strlen(ior_itemList[i].isName) > maxNameLength)
             {
                 maxNameLength = strlen(ior_itemList[i].isName);
@@ -286,8 +308,39 @@ void printMeny()
 } // printMeny
 
 
+  // ============================================================================
+
+// returnerar -1 om det inte finns något föremål på den platsen.
+// Returnerar index om allt bra.
+int searchItemId(ItemStruct* ir_itemList, int i_slotCount, int i_itemId)
+{
+    int index;
+
+    if (i_itemId >= i_slotCount)
+    {
+        return -1;
+    }
+    if (i_itemId != ir_itemList[i_itemId - 1].isId)
+    {
+        return -1;
+    }
+    return i_itemId - 1;
+}
 
 // ============================================================================
+
+
+// Returnerar TRUE om vi hittar posten.
+// Returnerar FALSE om annars.
+void removeItemFromList(ItemStruct* ior_itemList, int i_slotCount, int i_index)
+{
+
+
+
+}
+
+// ============================================================================
+
 
 // Returnerar NULL om det gått åt pipan.
 ItemStruct* loadItemList(char* ir_fileName, int* or_listSize)
@@ -313,7 +366,7 @@ ItemStruct* loadItemList(char* ir_fileName, int* or_listSize)
     {
         return NULL;
     }
-    
+
     *or_listSize = fHeader.sf_recordCount;
     itemListPtr = malloc(sizeof(ItemStruct) * (*or_listSize));
     if (itemListPtr == NULL)
@@ -398,7 +451,7 @@ int saveItemList(char* ir_fileName, ItemStruct* ir_itemList, int i_listSize)
 int main(void)
 {
     ItemStruct *itemList = NULL;
-    int itemCount = 0;
+    int slotCount = 0;
     char selection;
     int errorFlag = TRUE;
     int continueFlag = TRUE;
@@ -428,7 +481,7 @@ int main(void)
         case '1':
         {
             // 1 - Add item to itemlist.
-            itemList = addItemToListinHeap(itemList, &itemCount);
+            itemList = addItemToListinHeap(itemList, &slotCount);
             break;
         }
         case '2':
@@ -437,19 +490,19 @@ int main(void)
             // Vi ska ladda en lista, kasta bort den gamla
             // TODO: Fråga om operatorn vill kasta den gamla listan: om inte återgå till menyn.
             free(itemList);
-            itemList = loadItemList("test.bin", &itemCount);
+            itemList = loadItemList("test.bin", &slotCount);
             break;
         }
         case '3':
         {
             // 3 - Print itemlist
-            printList(itemList, itemCount);
+            printList(itemList, slotCount);
             break;
         }
         case '4':
         {
             // 4 - Save itemlist to file.
-            errorFlag = saveItemList("test.bin", itemList, itemCount);
+            errorFlag = saveItemList("test.bin", itemList, slotCount);
             break;
         }
         case '5':
@@ -462,6 +515,43 @@ int main(void)
         {
             // 6 - Delete item in itemlist.
             // TODO:
+            int itemId, index;
+            int errorFlag;
+
+            do
+            {
+                // Se till att användaren matar in korrekt id.
+                printf_s("Enter the item ID that you want to remove: ");
+                scanf_s("%d", &itemId);
+                flushRestOfLine();
+
+                if (itemId <= 0)
+                {
+                    printf_s("Please enter item ID > 0 !\n\n");
+                    errorFlag = TRUE;
+                }
+                else
+                {
+                    errorFlag = FALSE;
+                }
+
+            } while (errorFlag);
+
+            // Leta upp ID i listan, om ej hittat returneras -1;
+            index = searchItemId(itemList, slotCount, itemId);
+            if (index < 0)
+            {
+                printf_s("*** Index not Found. No item Removed! ***\n\n");
+            }
+            else
+            {
+                // TODO: Gör en print på item och be om bekräftelse!
+
+                // Vi blankar item ID för att markera ledig slot
+                itemList[index].isId = 0;
+                printf_s("You have now removed item-Id: %d\n", itemId);
+
+            }
             break;
         }
         case '7':
