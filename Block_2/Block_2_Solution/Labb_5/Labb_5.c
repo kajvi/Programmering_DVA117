@@ -184,7 +184,7 @@ void main(void)
     ItemStruct itemList[C_LIST_LENGTH];
     int i = 0;
 
-    printf_s("Welcome to the shopping list!\n\n");
+    printf_s("Welcome to the shopping list 5.0!\n\n");
     printf_s("You may now enter your items!\n");
 
     // Sätter unikt id till vilket nummer den har på listan

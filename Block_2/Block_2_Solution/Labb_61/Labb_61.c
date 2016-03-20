@@ -24,8 +24,6 @@
 // Defines for readLine
 #define C_BUFFER_SIZE 80
 
-// Defines för Main
-#define C_LIST_BUFFER 10
 
 struct itemStruct
 {
@@ -236,7 +234,7 @@ int main(void)
     int errorFlag = TRUE;
     int continueFlag = TRUE;
 
-    printf_s("Welcome to the shopping list!\n");
+    printf_s("Welcome to the shopping list 6.1!\n");
 
     itemList = (ItemStruct*)malloc(sizeof(ItemStruct));
 

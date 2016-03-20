@@ -1,5 +1,7 @@
 // 2016-03-07 Daniel Stenekap och Göran Forström
 
+// TODO: (EXTRA) handle input int/float with letter following number.
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -12,21 +14,18 @@
 
 #include <windows.h>
 
-
-
 // Defines för flushRestOfLine
 #define C_RADSLUT 10
 
 // Defines för itemStruct
 #define C_ITEM_NAME_LENGTH 30
 #define C_UNIT_NAME_LENGTH 30
-#define C_LIST_LENGTH 3
 
 // Defines for readLine
 #define C_BUFFER_SIZE 80
 
-// Defines för Main
-#define C_LIST_BUFFER 10
+// Defines för Listan
+#define C_LIMIT 0
 #define C_FILE_NAME_LENGTH 80
 
 struct fileHeader
@@ -49,10 +48,9 @@ typedef struct itemStruct ItemStruct;
 void systemAbort(char* ir_message)
 {
     printf_s("\n\n ***** %s ****** \n\n", ir_message);
-    Sleep(2000);
+    Sleep(5000);
     exit(EXIT_FAILURE);
 } // systemAbort
-
 
 
 // ============================================================================
@@ -71,6 +69,37 @@ static void flushRestOfLine(void)
 
 // ============================================================================
 
+// Print prompt: wait for "y" or "n" to be entered and return 1 = yes , 0 = no
+int yesNoRepeater(char ir_prompt[])
+{
+    char repeatChar;
+    do
+    {
+        // Loopar tills man väljer y eller n.
+
+        printf_s("%s (y/n): ", ir_prompt);
+        scanf_s("%c", &repeatChar, 1);
+
+        // Tömmer resten av In-strömmen från tangentbordet fram till radslut.
+        flushRestOfLine();
+
+        if (repeatChar == 'y' || repeatChar == 'Y')
+        {
+            return 1;
+        }
+        else if (repeatChar == 'n' || repeatChar == 'N')
+        {
+            return 0;
+        }
+        else
+        {
+            printf_s("Please enter either y (yes) or n (no)\n");
+        }
+    } while (TRUE);
+} // yesNoRepeater
+
+
+// ============================================================================
 
 
 // Returns FALSE if: Nothing was read, Input out of range, Input cut off by fgets before EOL. 
@@ -119,92 +148,181 @@ int readLine(char* ior_chArr, int i_sizeChArr)
 
 // ============================================================================
 
-
-
-void inputFilename(char* ior_fileName, int i_maxLength)
+// Se till att användaren matar in korrekt värde större än limit, returnera detta!
+int inputIntGreaterThanLimit(char * ir_PromptChArr, int i_limit)
 {
-    int okFlag = FALSE;
-    char* tempInputPtr;
-    tempInputPtr = malloc(sizeof(char) * i_maxLength);
-    if (tempInputPtr == NULL)
-    {
-        systemAbort("Out of memory");
-    }
-
-    printf_s("Hit Enter to use Current File Name: (\"%s\") ", ior_fileName);
-    printf_s("or input New File Name!\n)");
-
+    int resInt;
+    int numberOfArgumentsRecived;
+    int errorFlag;
 
     do
     {
-        printf_s("Enter File Name = %s = ", ior_fileName);
-        okFlag = readLine(tempInputPtr, i_maxLength);
-        if (okFlag == FALSE)
+        printf_s(ir_PromptChArr);
+        numberOfArgumentsRecived = scanf_s("%d", &resInt);
+        flushRestOfLine();
+
+        errorFlag = TRUE;
+
+        if (numberOfArgumentsRecived == 1)
         {
-            printf_s("*** Input not accepted! Please try again! ***\n");
+            if (resInt <= i_limit)
+            {
+                printf_s("Please enter an integer value above %d !\n\n", i_limit);
+            }
+            else
+            {
+                errorFlag = FALSE;
+            }
         }
-    } while (!okFlag);
+    } while (errorFlag == TRUE);
 
-    strcpy_s(ior_fileName, i_maxLength, tempInputPtr);
-    free(tempInputPtr);
-}
+    return resInt;
 
+} // inputIntGreaterThanLimit
 
 // ============================================================================
 
-void inputItem(ItemStruct* ior_item)
+// Get input as string, use current string as default if edit mode!
+
+void inputStrWithDefault(char * ir_promptStr, char * ior_Str, int i_maxLen, int i_editFlag)
 {
-    int numberOfArgumentsRecived;
     int okFlag;
+    char* tempInputPtr;
+
+    tempInputPtr = malloc(sizeof(char) * i_maxLen);
+    if (tempInputPtr == NULL)
+    {
+        systemAbort("Out of memory in inputStrWithDefault");
+    }
 
     do
     {
-        //TODO (Extra): Blanka alla ch_arr innan vi skriver till dem!!
-        printf_s("Name of item %d: ", (*ior_item).isId);
-        okFlag = readLine(ior_item->isName, sizeof(ior_item->isName));
-
-        if (ior_item->isName[0] == '\0')
+        printf_s(ir_promptStr);
+        if (i_editFlag)
         {
-            printf_s("Name cannot be empty!\n");
+            // Print old value as default
+            printf_s("%s = ", ior_Str);
+        }
+
+        okFlag = readLine(tempInputPtr, i_maxLen);
+
+        // Check if empty string as input
+        if (tempInputPtr[0] == '\0')
+        {
+            if (i_editFlag)
+            {
+                // No Entry - means keep old name...
+                okFlag = TRUE;
+                break;
+            }
+            printf_s("Input cannot be empty!\n");
             okFlag = FALSE;
         }
         else if (okFlag == FALSE)
         {
             // Inmatningen är för lång.
-            printf_s("WARNING! The entered Name has been truncated!\n");
+            printf_s("WARNING! The entered input has been truncated!\n");
             okFlag = TRUE;
         }
-        // scanf_s("%s", &ior_item->isName[0], sizeof(ior_item->isName)); // Bryter vid mellanslag
-        // flushRestOfLine();
+
+        if (okFlag)
+        {
+            // Use the new input!
+            strcpy_s(ior_Str, i_maxLen, tempInputPtr);
+        }
     } while (!okFlag);
+
+    free(tempInputPtr);
+    tempInputPtr = NULL;
+
+} // inputStrWithDefault
+
+
+  // ============================================================================
+
+
+  // Get input as string, use current string as default if edit mode!
+
+void inputFloatWithDefault(char * ir_promptStr, float * ior_Float, int i_editFlag)
+{
+
+    char* tmpFloatAsStr;
+    int numberOfArgumentsRecived;
+    float tempFloat;
+
+    tmpFloatAsStr = malloc(sizeof(char) * 16); // Plats för 16 tecken i floaten
+    if (tmpFloatAsStr == NULL)
+    {
+        systemAbort("Out of memory in inputFloatWithDefault");
+    }
 
     do
     {
-        printf_s("Number of this item: ");
-        numberOfArgumentsRecived = scanf_s("%f", &ior_item->isAmount); // Space after %f replaces flushRestOfLine
-        flushRestOfLine();
-
-        if (numberOfArgumentsRecived == 1)
+        if (i_editFlag)
         {
-            break;
+            sprintf_s(tmpFloatAsStr, sizeof(tmpFloatAsStr), "%g", *ior_Float);
+        }
+        inputStrWithDefault(ir_promptStr, tmpFloatAsStr, sizeof(tmpFloatAsStr), i_editFlag);
+
+        if (tmpFloatAsStr[0] == 0)
+        {
+            // Empty input, no change - Use default value...
         }
         else
         {
-            printf_s("*** Please enter a number! ***\n");
+            // Some input, check value...
+            numberOfArgumentsRecived = sscanf_s(tmpFloatAsStr, "%f", &tempFloat);
+            if (numberOfArgumentsRecived == 1)
+            {
+                // Use the entered value...
+                *ior_Float = tempFloat;
+                break;
+            }
+            else
+            {
+                printf_s("*** Please enter a number! ***\n");
+            }
         }
     } while (TRUE);
 
-    printf_s("Enter the Unit: ");
-    okFlag = readLine(ior_item->isUnit, sizeof(ior_item->isUnit));
+} // inputFloatWithDefault
 
-    // scanf_s("%s", &ior_item->isUnit[0], C_UNIT_NAME_LENGTH);
-    // flushRestOfLine();
+
+// ============================================================================
+
+void inputFilename(char* ior_fileName, int i_maxLength)
+{
+
+    printf_s("Hit Enter to use Current File Name: (\"%s\") ", ior_fileName);
+    printf_s("or input New File Name!\n");
+
+    inputStrWithDefault("File Name: ", ior_fileName, i_maxLength, TRUE);
+} // inputFilename
+
+// ============================================================================
+
+// Input data for an item, param. i_DoEdit = TRUE means prompt with default (used at Edit Item)
+void inputItem(ItemStruct* ior_item, int i_editFlag)
+{
+    char promptName[20] = "Name:     ";
+    char promptAmount[20] = "Amount:   ";
+    char promptUnit[20] = "Unit:     ";
+
+    //TODO (EXTRA): Blanka alla ch_arr innan vi skriver till dem!!
+
+    printf_s("Update item %d: \n", (*ior_item).isId);
+    inputStrWithDefault(promptName, ior_item->isName, sizeof(ior_item->isName), i_editFlag);
+
+    inputFloatWithDefault(promptAmount, &ior_item->isAmount, i_editFlag);
+
+    inputStrWithDefault(promptUnit, ior_item->isUnit, sizeof(ior_item->isUnit), i_editFlag);
+
 } // inputItem
 
 
 
-
 // ============================================================================
+
 
 // Dynamisk Minneshantering
 ItemStruct* addItemToListinHeap(ItemStruct* ior_itemList, int* ior_currslotCount)
@@ -218,12 +336,12 @@ ItemStruct* addItemToListinHeap(ItemStruct* ior_itemList, int* ior_currslotCount
 
     // Undersöker om det finns lediga slots, om ja: återanvänd. 
     // Unik ID refererar till plats i listan. Är inte knutet till föremålet.
-    for (index = 0; index < ior_currslotCount; index++)
+    for (index = 0; index < *ior_currslotCount; index++)
     {
         if (ior_itemList[index].isId == 0)
         {
             ior_itemList[index].isId = index + 1;
-            addItem(&ior_itemList[index]);
+            inputItem(&ior_itemList[index], FALSE);
             return ior_itemList;
         }
     }
@@ -234,16 +352,16 @@ ItemStruct* addItemToListinHeap(ItemStruct* ior_itemList, int* ior_currslotCount
     {
         // Om allokering framgångsrik: flytta till ledig possition och lägg till föremål.
         ptr[*ior_currslotCount].isId = *ior_currslotCount + 1;
-        inputItem(&ptr[*ior_currslotCount]);
+        inputItem(&ptr[*ior_currslotCount], FALSE);
         (*ior_currslotCount)++; // Uppdaterar antal slots i listan.
     }
 
     // Returnera en pekare till listans start.
     return ptr;
-} //addItemToListinHeap
+} // addItemToListinHeap
 
 
-  // ============================================================================
+// ============================================================================
 
 void printList(ItemStruct* ior_itemList, int i_listLength)
 {
@@ -279,11 +397,15 @@ void printList(ItemStruct* ior_itemList, int i_listLength)
 
         // Created adapted format string for the list
         // %.3g ger 3 signifikanta siffror men ger för vissa värden utskrift i grundpotensform
-        sprintf_s(&formatStr[0], 100, "%%3d %%%ds %%6.3g %%%ds\n", maxNameLength, maxUnitLength);
+        sprintf_s(&formatStr[0], 100, "%%3d %%-%ds %%6.3g %%-%ds\n", maxNameLength, maxUnitLength);
 
         // Print list...
         for (i = 0; i < i_listLength; i++)
         {
+            if (ior_itemList[i].isId == 0)
+            {
+                continue;
+            }
             printf_s(formatStr, (ior_itemList + i)->isId, (ior_itemList + i)->isName, (ior_itemList + i)->isAmount, (ior_itemList + i)->isUnit);
         }
     }
@@ -291,7 +413,7 @@ void printList(ItemStruct* ior_itemList, int i_listLength)
 
 
 
-  // ============================================================================
+// ============================================================================
 
 void printMeny()
 {
@@ -308,15 +430,36 @@ void printMeny()
 } // printMeny
 
 
+
   // ============================================================================
+
+
+// Returnerar antalet föremål i listan.
+int countListItems(ItemStruct* ir_itemList, int i_slotCount)
+{
+    int i = 0;
+    int itemCount = 0;
+
+    for (i = 0; i < i_slotCount; i++)
+    {
+        if (ir_itemList[i].isId != 0)
+        {
+            itemCount++;
+        }
+    }
+    return itemCount;
+} // countListItems
+
+
+
+// ============================================================================
 
 // returnerar -1 om det inte finns något föremål på den platsen.
 // Returnerar index om allt bra.
 int searchItemId(ItemStruct* ir_itemList, int i_slotCount, int i_itemId)
 {
-    int index;
 
-    if (i_itemId >= i_slotCount)
+    if (i_itemId > i_slotCount)
     {
         return -1;
     }
@@ -325,22 +468,10 @@ int searchItemId(ItemStruct* ir_itemList, int i_slotCount, int i_itemId)
         return -1;
     }
     return i_itemId - 1;
-}
+} // searchItemId
+
 
 // ============================================================================
-
-
-// Returnerar TRUE om vi hittar posten.
-// Returnerar FALSE om annars.
-void removeItemFromList(ItemStruct* ior_itemList, int i_slotCount, int i_index)
-{
-
-
-
-}
-
-// ============================================================================
-
 
 // Returnerar NULL om det gått åt pipan.
 ItemStruct* loadItemList(char* ir_fileName, int* or_listSize)
@@ -374,7 +505,7 @@ ItemStruct* loadItemList(char* ir_fileName, int* or_listSize)
         *or_listSize = 0; // Vi har inte fått minne till alla poster vi ville läsa.
         free(itemListPtr);
         itemListPtr = NULL;
-        return NULL;
+        systemAbort("\n*** Out of Memory at loadItemList! Program aborts! ***\n");
     }
 
     // Läs listan till Minnet
@@ -454,27 +585,21 @@ int main(void)
     int slotCount = 0;
     char selection;
     int errorFlag = TRUE;
+    int okFlag;
     int continueFlag = TRUE;
     char fileName[C_FILE_NAME_LENGTH] = "test.bin";
 
-    printf_s("Welcome to the shopping list!\n");
+    printf_s("Welcome to the shopping list 6.2!\n");
 
     itemList = (ItemStruct*)malloc(sizeof(ItemStruct));
 
     do
     {
-        if (itemList == NULL)
-        {
-            printf_s("\n");
-            printf_s("*** Out of Memory! Program abort! ***\n");
-            Sleep(1000);
-            return 1;
-        }
+
         printMeny();
         selection = _getch();
         printf_s("%c\n\n", selection);
         Sleep(400);
-
 
         switch (selection)
         {
@@ -482,15 +607,44 @@ int main(void)
         {
             // 1 - Add item to itemlist.
             itemList = addItemToListinHeap(itemList, &slotCount);
+            if (itemList == NULL)
+            {
+                systemAbort("\n*** Out of Memory in main! Program aborts! ***\n");
+            }
             break;
         }
         case '2':
         {
             // 2 - Load itemlist from file
             // Vi ska ladda en lista, kasta bort den gamla
-            // TODO: Fråga om operatorn vill kasta den gamla listan: om inte återgå till menyn.
+            int continueFlag;
+            int itemCount;
+
+            itemCount = countListItems(itemList, slotCount);
+
+            if (itemCount > 0)
+            {
+                continueFlag = yesNoRepeater("You have unsaved values in ur list. Do you want to delete them?");
+
+                if (!continueFlag)
+                {
+                    printf_s("Load aborted! No change in current list.\n\n");
+                    break;
+                }
+            }
+
             free(itemList);
-            itemList = loadItemList("test.bin", &slotCount);
+            inputFilename(fileName, sizeof(fileName));
+            itemList = loadItemList(fileName, &slotCount);
+            if (itemList == NULL)
+            {
+                printf("ERROR: File Read of \"%s\" failed!\n\n", fileName);
+            }
+            else
+            {
+                printf("File Read of \"%s\" OK.\n", fileName);
+            }
+
             break;
         }
         case '3':
@@ -502,42 +656,48 @@ int main(void)
         case '4':
         {
             // 4 - Save itemlist to file.
-            errorFlag = saveItemList("test.bin", itemList, slotCount);
+            inputFilename(fileName, sizeof(fileName));
+            okFlag = saveItemList(fileName, itemList, slotCount);
+            if (!okFlag)
+            {
+                printf("ERROR: File Save to \"%s\" failed!\n\n", fileName);
+            }
+            else
+            {
+                printf("File Save to \"%s\" OK.\n", fileName);
+            }
             break;
         }
         case '5':
         {
             // 5 - Edit item in itemlist. 
-            // TODO:
+            int itemId, index;
+
+            itemId = inputIntGreaterThanLimit("Enter the item ID that you want to edit: ", C_LIMIT);
+
+            // Leta upp Item ID i listan, om ej hittat returneras -1;
+            index = searchItemId(itemList, slotCount, itemId);
+            if (index < 0)
+            {
+                printf_s("*** Item not Found. No item to be edited! ***\n\n");
+            }
+            else
+            {
+                // As input of new item but with prompt of current contents
+                printf_s("Hit Enter to use Current Value or input New Value! \n");
+                inputItem(&itemList[index], TRUE);
+            }
             break;
         }
         case '6':
         {
             // 6 - Delete item in itemlist.
-            // TODO:
+
             int itemId, index;
-            int errorFlag;
 
-            do
-            {
-                // Se till att användaren matar in korrekt id.
-                printf_s("Enter the item ID that you want to remove: ");
-                scanf_s("%d", &itemId);
-                flushRestOfLine();
+            itemId = inputIntGreaterThanLimit("Enter the item ID that you want to remove: ", C_LIMIT);
 
-                if (itemId <= 0)
-                {
-                    printf_s("Please enter item ID > 0 !\n\n");
-                    errorFlag = TRUE;
-                }
-                else
-                {
-                    errorFlag = FALSE;
-                }
-
-            } while (errorFlag);
-
-            // Leta upp ID i listan, om ej hittat returneras -1;
+            // Leta upp Item ID i listan, om ej hittat returneras -1;
             index = searchItemId(itemList, slotCount, itemId);
             if (index < 0)
             {
@@ -545,7 +705,7 @@ int main(void)
             }
             else
             {
-                // TODO: Gör en print på item och be om bekräftelse!
+                // TODO (EXTRA): Gör en print på item och be om bekräftelse!
 
                 // Vi blankar item ID för att markera ledig slot
                 itemList[index].isId = 0;
@@ -572,3 +732,6 @@ int main(void)
     itemList = NULL;
     return 0;
 } // Main
+
+// ============================================================================
+
