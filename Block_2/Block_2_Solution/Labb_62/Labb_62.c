@@ -245,12 +245,13 @@ void inputStrWithDefault(char * ir_promptStr, char * ior_Str, int i_maxLen, int 
 
 void inputFloatWithDefault(char * ir_promptStr, float * ior_Float, int i_editFlag)
 {
-
+	int sizeOfTmpFloatStr = 16;
     char* tmpFloatAsStr;
+	char tmpCh;
     int numberOfArgumentsRecived;
     float tempFloat;
 
-    tmpFloatAsStr = malloc(sizeof(char) * 16); // Plats för 16 tecken i floaten
+    tmpFloatAsStr = malloc(sizeof(char) * sizeOfTmpFloatStr); // Plats för 16 tecken i floaten
     if (tmpFloatAsStr == NULL)
     {
         systemAbort("Out of memory in inputFloatWithDefault");
@@ -262,7 +263,7 @@ void inputFloatWithDefault(char * ir_promptStr, float * ior_Float, int i_editFla
         {
             sprintf_s(tmpFloatAsStr, sizeof(tmpFloatAsStr), "%g", *ior_Float);
         }
-        inputStrWithDefault(ir_promptStr, tmpFloatAsStr, sizeof(tmpFloatAsStr), i_editFlag);
+        inputStrWithDefault(ir_promptStr, tmpFloatAsStr, sizeOfTmpFloatStr, i_editFlag);
 
         if (tmpFloatAsStr[0] == 0)
         {
@@ -271,7 +272,7 @@ void inputFloatWithDefault(char * ir_promptStr, float * ior_Float, int i_editFla
         else
         {
             // Some input, check value...
-            numberOfArgumentsRecived = sscanf_s(tmpFloatAsStr, "%f", &tempFloat);
+            numberOfArgumentsRecived = sscanf_s(tmpFloatAsStr, "%f%c", &tempFloat, &tmpCh);
             if (numberOfArgumentsRecived == 1)
             {
                 // Use the entered value...
