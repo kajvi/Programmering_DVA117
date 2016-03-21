@@ -227,7 +227,7 @@ void inputFloatWithDefault(char * ir_promptStr, float * ior_Float, int i_editFla
     {
         if (i_editFlag)
         {
-            sprintf_s(tmpFloatAsStr, sizeof(tmpFloatAsStr), "%g", *ior_Float);
+            sprintf_s(tmpFloatAsStr, sizeOfTmpFloatStr, "%g", *ior_Float);
         }
         inputStrWithDefault(ir_promptStr, tmpFloatAsStr, sizeOfTmpFloatStr, i_editFlag);
 
