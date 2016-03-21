@@ -28,9 +28,11 @@
 #define C_LIMIT 0
 #define C_FILE_NAME_LENGTH 80
 
+#define C_MAGIC_NUMBER 0x11223344
 struct fileHeader
 {
-    int sf_recordCount;
+	int sf_magicNumber;
+	int sf_recordCount;
 };
 typedef struct fileHeader FileHeader;
 
@@ -493,13 +495,19 @@ ItemStruct* loadItemList(char* ir_fileName, int* or_listSize)
     }
 
     // Läs File Header till listSize;
-    readRecordCount = fread(&fHeader, sizeof(FileHeader), 1, fp); // Innehållet i i_listSize skrivs till file.
+    readRecordCount = fread(&fHeader, sizeof(FileHeader), 1, fp); // Innehållet i i_listSize läses från file.
     if (readRecordCount != 1)
     {
         return NULL;
     }
 
-    *or_listSize = fHeader.sf_recordCount;
+	// Check that file contents is as expected
+    if (fHeader.sf_magicNumber != C_MAGIC_NUMBER)
+	{
+		return NULL;
+	}
+	*or_listSize = fHeader.sf_recordCount;
+	
     itemListPtr = malloc(sizeof(ItemStruct) * (*or_listSize));
     if (itemListPtr == NULL)
     {
@@ -553,6 +561,7 @@ int saveItemList(char* ir_fileName, ItemStruct* ir_itemList, int i_listSize)
 
     // Uppdatera File Header till listSize;
     fHeader.sf_recordCount = i_listSize;
+	fHeader.sf_magicNumber = C_MAGIC_NUMBER;
     writenRecordCount = fwrite(&fHeader, sizeof(FileHeader), 1, fp); // Innehållet i i_listSize skrivs till file.
     if (writenRecordCount != 1)
     {

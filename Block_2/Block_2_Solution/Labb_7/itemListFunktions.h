@@ -10,9 +10,11 @@
 // Defines för Listan
 #define C_LIMIT 0
 
+#define C_MAGIC_NUMBER 0x11223344
 struct fileHeader
 {
-    int sf_recordCount;
+	int sf_magicNumber;
+	int sf_recordCount;
 };
 typedef struct fileHeader FileHeader;
 
